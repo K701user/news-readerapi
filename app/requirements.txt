@@ -2,4 +2,4 @@ flask
 gunicorn
 Tokenizer
 requests
-BeautifulSoup
+BeautifulSoup4
