@@ -3,3 +3,4 @@ gunicorn
 Tokenizer
 requests
 BeautifulSoup4
+janome
