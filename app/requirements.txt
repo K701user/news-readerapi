@@ -4,3 +4,4 @@ Tokenizer
 requests
 BeautifulSoup4
 janome
+requests_oauthlib
