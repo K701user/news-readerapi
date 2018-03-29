@@ -6,3 +6,4 @@ BeautifulSoup4
 janome
 requests_oauthlib
 numpy
+networkx
