@@ -7,3 +7,4 @@ janome
 requests_oauthlib
 numpy
 networkx
+sklearn
