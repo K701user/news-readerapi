@@ -19,4 +19,40 @@ info:
   version: "1.0.0"
 # This field will be replaced by the deploy_api.sh script.
 host: "sports-agent-199307.appspot.com"
-
+schemes:
+  - "https"
+paths:
+  "/news-reader":
+    get:
+      description: "Get the news."
+      operationId: "newsread"
+      parameters:
+        -
+          name: query
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: "Success."
+          schema:
+            type: string
+        400:
+          description: "The query is invalid or missing."
+  "/debug/news-reader":
+    get:
+      description: "Get the news."
+      operationId: "newsread"
+      parameters:
+        -
+          name: query
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: "Success."
+          schema:
+            type: string
+        400:
+          description: "The query is invalid or missing."
