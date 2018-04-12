@@ -34,7 +34,7 @@ def newsreader_debug():
 
 
 @app.route('/sammarize', methods=['GET'])
-def newsreader():
+def summarize():
     """Given an query, return that news."""
     query = request.args.get('query')
     rowcount = request.args.get('row')
