@@ -253,6 +253,17 @@ class SportsLive:
 
         return sentences
 
+    def sammarize(self, text, rowcount):
+        json_dict = {}
+        sentences, debug_info = summarize(
+            text, sent_limit=rowcount, continuous=True, debug=True
+        )
+        
+        output_text = " ".join(sentences)
+        json_dict.update({"result_text":output_text})
+        encode_json_data = json.dumps(json_dict)
+
+        return encode_json_data
 
 def main():
     SL = SportsLive()
