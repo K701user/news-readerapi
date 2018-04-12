@@ -56,6 +56,28 @@ paths:
             type: string
         400:
           description: "The query is invalid or missing."
+  "/sammarize":
+    get:
+      description: "Sammarize text."
+      operationId: "Sammarize"
+      parameters:
+        -
+          name: text
+          in: query
+          required: true
+          type: string
+        -
+          name: row
+          in: query
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Success."
+          schema:
+            type: string
+        400:
+          description: "The query is invalid or missing."
 
 definitions:
   echoMessage:
