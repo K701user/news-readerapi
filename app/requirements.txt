@@ -10,5 +10,4 @@ networkx
 sklearn
 scipy
 lxml
-itertools
 google-cloud-bigquery
