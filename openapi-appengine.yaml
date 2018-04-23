@@ -42,6 +42,7 @@ paths:
           in: query
           required: true
           type: string
+          format: date
       responses:
         200:
           description: "Success."
@@ -69,6 +70,7 @@ paths:
           in: query
           required: true
           type: string
+          format: date
       responses:
         200:
           description: "Success."
@@ -91,6 +93,7 @@ paths:
           in: query
           required: true
           type: string
+          format: date
       responses:
         200:
           description: "Success."
@@ -113,6 +116,7 @@ paths:
           in: query
           required: true
           type: string
+          format: date
       responses:
         200:
           description: "Success."
