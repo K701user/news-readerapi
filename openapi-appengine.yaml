@@ -184,6 +184,13 @@ paths:
     post:
       description: "add record text."
       operationId: "addrecord"
+      parameters:
+        -
+          name: date
+          in: query
+          required: true
+          type: string
+          format: date
       responses:
         200:
           description: "Success."
