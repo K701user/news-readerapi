@@ -25,7 +25,7 @@ paths:
   "/news-loader":
     get:
       description: "Get the news."
-      operationId: "newsread"
+      operationId: "newsload"
       parameters:
         -
           name: query
@@ -53,7 +53,7 @@ paths:
   "/debug/news-loader":
     get:
       description: "Get the news."
-      operationId: "newsreaddebug"
+      operationId: "newsloaddebug"
       parameters:
         -
           name: query
@@ -81,7 +81,7 @@ paths:
   "/player-loader":
     get:
       description: "Get the news."
-      operationId: "newsload"
+      operationId: "playerload"
       parameters:
         -
           name: query
@@ -104,7 +104,7 @@ paths:
   "/debug/player-loader":
     get:
       description: "Get the news."
-      operationId: "newsloaddebug"
+      operationId: "playerloaddebug"
       parameters:
         -
           name: query
@@ -183,7 +183,7 @@ paths:
   "/add_record":
     post:
       description: "add record text."
-      operationId: "Sammarize"
+      operationId: "addrecord"
       responses:
         200:
           description: "Success."
