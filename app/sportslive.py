@@ -1,12 +1,19 @@
 # coding=utf-8
-import requests
-from bs4 import BeautifulSoup
+import csv
+import calendar
+import datetime
+import json
+import random
 
-import json
+import itertools
+import requests
+
+from bs4 import BeautifulSoup
 from janome.tokenizer import Tokenizer
-import json
 from requests_oauthlib import OAuth1Session
 from summpy.lexrank import summarize
+from google.cloud import bigquery
+
 
 # twitterAPI
 oath_key_dict = {
@@ -23,8 +30,33 @@ rss_news = [r"https://headlines.yahoo.co.jp/rss/jsportsv-c_spo.xml",
             r"https://headlines.yahoo.co.jp/rss/bfj-c_spo.xml",
             r"https://headlines.yahoo.co.jp/rss/nallabout-c_spo.xml",
             r"https://headlines.yahoo.co.jp/rss/asahik-c_spo.xml",
-            r"https://headlines.yahoo.co.jp/rss/baseballk-c_spo.xml"]
-news_dict = {}
+            r"https://headlines.yahoo.co.jp/rss/baseballk-c_spo.xml",
+            r"https://headlines.yahoo.co.jp/rss/spnaviv-c_spo.xml",
+            r"https://headlines.yahoo.co.jp/rss/tennisnet-c_spo.xml",
+            r"https://headlines.yahoo.co.jp/rss/nksports-c_spo.xml",
+            r"https://headlines.yahoo.co.jp/rss/gekisaka-c_spo.xml",
+            r"https://headlines.yahoo.co.jp/rss/fullcount-c_spo.xml"]
+
+base_url = [r"http://www.baseball-lab.jp"]
+player_url = [r"/player/batter/",
+              r"/player/pitcher/"]
+team_url = [r'6/',
+            r'5/',
+            r'3/',
+            r'1/',
+            r'4/',
+            r'2/',
+            r'12/',
+            r'7/',
+            r'376/',
+            r'11/',
+            r'8/',
+            r'9/']
+
+player_record = {}
+months = {}
+for i, v in enumerate(calendar.month_abbr):
+    months[v] = i
 
 
 def create_oath_session(oath_key_dict):
@@ -128,6 +160,7 @@ class SportsLive:
         return outtext2
 
     def news_check(self, keyword, debug=False):
+        news_dict = {}
         keyword = keyword.split(' ')
         output_text = ""
         json_dict = {}
@@ -169,6 +202,107 @@ class SportsLive:
                     )
 
                 output_text += '<br>'.join(analysis_text)
+
+        json_dict.update({"result_text":output_text})
+
+        encode_json_data = json.dumps(json_dict)
+
+        return encode_json_data
+
+    def news_loader(self, keyword, rowcount, day, debug=False):
+        news_dict = {}
+        keyword = keyword.split(' ')
+        output_text = ""
+        json_dict = {}
+        client = bigquery.Client()
+
+        if 1 <= rowcount < 5:
+            rowcount_str = "row{}_text".format(str(rowcount))
+        else:
+            rowcount_str = "Full_text"
+
+        day = day.strftime('%Y%m%d')
+
+        if debug:
+            myquery = """
+                        SELECT title,Full_text,{0} as text
+                        FROM sportsagent.newsrecord${1}
+                        WHERE title like '%{2}%'
+                      """.format(rowcount_str, day, str(keyword))
+        elif debug and rowcount_str == "Full_text":
+            myquery = """
+                        SELECT title,Full_text as text
+                        FROM sportsagent.newsrecord${0}
+                        WHERE title like '%{1}%'
+                      """.format(day, str(keyword))
+        else:
+            myquery = """
+                        SELECT {0} as text
+                        FROM sportsagent.newsrecord${1}
+                        WHERE title like '%{2}%'
+                      """.format(rowcount_str, day, str(keyword))
+
+        query_job = client.query(myquery)
+        results = query_job.result()  # Waits for job to complete.
+
+        if 1 <= rowcount < 5:
+            # random select for results
+            randindex = random.randint(0, len(results))
+            output_text = results[randindex].text
+        else:
+            text = "".join([re.text for re in results])
+            output_text = self.analsys_text(text, rowcount)
+
+        if debug:
+            for result in results:
+                json_dict.update({result.title:
+                {
+                    'text':result.Full_text,
+                    'a_text':result.text
+                }}
+                )
+
+        json_dict.update({"result_text":output_text})
+
+        encode_json_data = json.dumps(json_dict)
+
+        return encode_json_data
+
+    def player_loader(self, keyword, day, debug=False):
+        news_dict = {}
+        keyword = keyword.split(' ')
+        output_text = ""
+        json_dict = {}
+        client = bigquery.Client()
+
+        day = day.strftime('%Y%m%d')
+
+        if debug:
+            myquery = """
+                        SELECT name,record as text
+                        FROM sportsagent.playerrecord${0}
+                        WHERE name like '%{1}%'
+                      """.format(day, str(keyword))
+        else:
+            myquery = """
+                        SELECT name,record as text
+                        FROM sportsagent.playerrecord${0}
+                        WHERE name like '%{1}%'
+                      """.format(day, str(keyword))
+
+        query_job = client.query(myquery)
+        results = query_job.result()  # Waits for job to complete.
+
+        output_text = "".join([re.text for re in results])
+
+        if debug:
+            for result in results:
+                json_dict.update({result.title:
+                {
+                    'text':result.Full_text,
+                    'a_text':result.text
+                }}
+                )
 
         json_dict.update({"result_text":output_text})
 
@@ -253,24 +387,199 @@ class SportsLive:
 
         return sentences
 
-    def sammarize(self, text, rowcount):
+    @staticmethod
+    def analsys_text(text, rowcount):
+        sentences, debug_info = summarize(
+            text, sent_limit=rowcount, continuous=True, debug=True
+        )
+
+        return sentences
+
+    @staticmethod
+    def sammarize(text, rowcount):
         json_dict = {}
         sentences, debug_info = summarize(
             text, sent_limit=rowcount, continuous=True, debug=True
         )
         
         output_text = " ".join(sentences)
-        json_dict.update({"result_text":output_text})
+        json_dict.update({"result_text": output_text})
         encode_json_data = json.dumps(json_dict)
 
         return encode_json_data
 
-def main():
-    SL = SportsLive()
 
-    print(SL.news_check(SL.morphological_analysis('羽生のオリンピック')))
-    print(SL.news_check(SL.morphological_analysis('宇野昌磨の記録'), debug=True))
+class RecordAccumulation:
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def get_player_dic(date):
+        year = date.year
+        month = date.month
+        day = date.day
+
+        dic = {}
+        for path in list(itertools.product(base_url, player_url, team_url)):
+            req = requests.get("".join(path) + str(year) + "/")
+
+            try:
+                soup = BeautifulSoup(req.text, "lxml")
+            except:
+                soup = BeautifulSoup(req.text, "html.parser")
+
+            table = soup.findAll("table", class_="tbl-stats")[0]
+            tbody = table.findAll("tbody")[0]
+            td = tbody.findAll("td", class_="t-name")
+
+            for data in td:
+                a_tag = data.find("a")
+
+                dic.update({a_tag.text: [base_url[0] + a_tag.attrs["href"], path[1]]})
+
+        return dic
+
+    def get_player_record(self, player_dic, date):
+        rec_list = [["name", "player_type", "record"]]
+
+        for key in player_dic.keys():
+            req = requests.get(player_dic[key][0])
+
+            try:
+                soup = BeautifulSoup(req.text, "lxml")
+            except:
+                soup = BeautifulSoup(req.text, "html.parser")
+
+            try:
+                div = soup.findAll("div", class_="box", id="player-game-logs")[0]
+
+                if "batter" in player_dic[key][1]:
+                    table = div.findAll("table", class_="tbl-stats tbl-stats-batting")[0]
+                    rec_list.append([key] + self.get_record(table, "b", date))
+                else:
+                    table = div.findAll("table", class_="tbl-stats tbl-stats-pitching")[0]
+                    rec_list.append([key] + self.get_record(table, "p", date))
+                    table_bat = div.findAll("table", class_="tbl-stats tbl-stats-batting")[0]
+                    rec_list.append([key] + self.get_record(table_bat, "b", date))
+            except:
+                continue
+
+        return rec_list
+
+    @staticmethod
+    def get_record(table, player_type, date):
+        month = date.month
+        day = date.day
+        tbody = table.findAll("tbody")[0]
+        tr_list = tbody.findAll("tr")
+        record = ""
+
+        for tr in tr_list:
+            td = tr.findAll("td")
+
+            if "{0}/{1}".format(month, day) in td[0].text:
+                if player_type == "b":
+                    record = td[3].text + td[3].nextSibling \
+                             + td[5].text + td[5].nextSibling \
+                             + " " + td[4].text + td[4].nextSibling \
+                             + td[21].nextSibling + ":" + td[21].text
+                else:
+                    record = td[4].text + "回から" \
+                             + td[5].text + "回まで投げて" \
+                             + td[6].text + td[6].nextSibling + "に対して" \
+                             + td[11].text + td[11].nextSibling \
+                             + td[7].text + td[7].nextSibling
+                    if td[2].text == "●":
+                        record += "で、負けました。"
+                    else:
+                        record += "で、勝ちました。"
+                break
+            else:
+                pass
+        if record is "":
+            raise Exception
+
+        record = record.replace("\t", "").replace("  ", "")
+
+        return [player_type, record]
+
+    @staticmethod
+    def save_csv(table, filename):
+        with open(filename, "w", encoding="utf-8", newline='') as f:
+            writer = csv.writer(f)
+            for row in table:
+                writer.writerow(row)
+
+    def news_check(self, date):
+        news_dict = {}
+        output_text = ""
+        news_list = [["title", "url", "Full_text", "row1_text", "row2_text", "row3_text", "row4_text"]]
+
+        for rss in rss_news:
+            resp = requests.get(rss)
+            soup = BeautifulSoup(resp.text, "html.parser")
+
+            items = soup.find_all("item")
+
+            for item in items:
+                title = item.find_all("title")[0]
+                link = item.find_all("link")[0]
+                day = item.find_all("pubdate")[0].text
+
+                news_date = day.split(" ")
+                news_date = datetime.date(int(news_date[3]),
+                                          int(months[news_date[2]]),
+                                          int(news_date[1]))
+                if date == news_date:
+                    news_dict.update({title.text: str(link.next).replace('\n', '').replace(' ', '')})
+
+        news_key_list = [l for l in news_dict.keys()]
+
+        for list_key in news_key_list:
+            news = [list_key, news_dict[list_key]]
+            text = ""
+            resp = requests.get(news_dict[list_key])
+            soup = BeautifulSoup(resp.text, "html.parser")
+
+            for s in soup.find_all("p", class_="ynDetailText"):
+                text += s.get_text()
+
+            news.append(text)
+            for r_count in range(1, 5):
+                analysis_text = self.sammarize(text, r_count)
+                output_text = ''.join(analysis_text)
+                news.append(output_text)
+
+            news_list.append(news)
+
+        return news_list
+
+    @staticmethod
+    def sammarize(text, rowcount):
+        try:
+            sentences, debug_info = summarize(
+                text, sent_limit=rowcount, continuous=True, debug=True
+            )
+        except:
+            sentences = "sammarized error"
+
+        return sentences
+
+
+def main():
+    # SL = SportsLive()
+
+    # print(SL.news_check(SL.morphological_analysis('羽生のオリンピック')))
+    # print(SL.news_check(SL.morphological_analysis('宇野昌磨の記録'), debug=True))
+
+    RA = RecordAccumulation()
+    today = datetime.date(2018, 4, 18)
+    test = RA.news_check(today)
+    # test = RA.get_player_dic(today)
+    # table = RA.get_player_record(test, today)
+    RA.save_csv(test, "record.csv")
 
 
 if __name__ == '__main__':
     main()
+
