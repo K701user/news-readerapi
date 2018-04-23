@@ -22,7 +22,105 @@ host: "sports-agent-199307.appspot.com"
 schemes:
   - "https"
 paths:
-  "/news-reader":
+  "/news-loader":
+    get:
+      description: "Get the news."
+      operationId: "newsread"
+      parameters:
+        -
+          name: query
+          in: query
+          required: true
+          type: string
+        -
+          name: rowcount
+          in: query
+          required: true
+          type: integer
+        -
+          name: date
+          in: query
+          required: true
+          type: date
+      responses:
+        200:
+          description: "Success."
+          schema:
+            type: string
+        400:
+          description: "The query is invalid or missing."
+  "/debug/news-loader":
+    get:
+      description: "Get the news."
+      operationId: "newsreaddebug"
+      parameters:
+        -
+          name: query
+          in: query
+          required: true
+          type: string
+        -
+          name: rowcount
+          in: query
+          required: true
+          type: integer
+        -
+          name: date
+          in: query
+          required: true
+          type: date
+      responses:
+        200:
+          description: "Success."
+          schema:
+            type: string
+        400:
+          description: "The query is invalid or missing."
+  "/player-loader":
+    get:
+      description: "Get the news."
+      operationId: "newsload"
+      parameters:
+        -
+          name: query
+          in: query
+          required: true
+          type: string
+        -
+          name: date
+          in: query
+          required: true
+          type: date
+      responses:
+        200:
+          description: "Success."
+          schema:
+            type: string
+        400:
+          description: "The query is invalid or missing."
+  "/debug/player-loader":
+    get:
+      description: "Get the news."
+      operationId: "newsloaddebug"
+      parameters:
+        -
+          name: query
+          in: query
+          required: true
+          type: string
+        -
+          name: date
+          in: query
+          required: true
+          type: date
+      responses:
+        200:
+          description: "Success."
+          schema:
+            type: string
+        400:
+          description: "The query is invalid or missing."
+    "/news-reader":
     get:
       description: "Get the news."
       operationId: "newsread"
@@ -78,7 +176,17 @@ paths:
             type: string
         400:
           description: "The query is invalid or missing."
-
+  "/add_record":
+    get:
+      description: "add record text."
+      operationId: "Sammarize"
+      responses:
+        200:
+          description: "Success."
+          schema:
+            type: string
+        400:
+          description: "The query is invalid or missing."
 definitions:
   echoMessage:
     properties:
