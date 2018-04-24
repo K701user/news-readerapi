@@ -126,40 +126,39 @@ def add_record():
     today = datetime.date(tdatetime.year, tdatetime.month, tdatetime.day)
 
     news_record = ra.news_check(today)
-    ra.save_csv(news_record, "news_record.csv")
+    # ra.save_csv(news_record, "news_record.csv")
 
     result = load_data_from_file("sportsagent",
                                  "newsrecord${}".format(tdatetime),
-                                 "news_record.csv")
+                                 news_record)
 
     if result:
         return 'not found : %s' % day, 400
 
     player_list = ra.get_player_dic(today)
     player_record = ra.get_player_record(player_list, today)
-    ra.save_csv(news_record, "player_record.csv")
+    # ra.save_csv(player_record, "player_record.csv")
 
     result = load_data_from_file("sportsagent",
                                  "playerrecord${}".format(tdatetime),
-                                 "player_record.csv")
+                                 player_record)
 
     if result:
         return 'not found : %s' % day, 400
     return result, 200
 
 
-def load_data_from_file(dataset_id, table_id, source_file_name):
+def load_data_from_file(dataset_id, table_id, source):
     bigquery_client = bigquery.Client()
     dataset_ref = bigquery_client.dataset(dataset_id)
     table_ref = dataset_ref.table(table_id)
 
-    with open(source_file_name, 'rb') as source_file:
-        # This example uses CSV, but you can use other formats.
-        # See https://cloud.google.com/bigquery/loading-data
-        job_config = bigquery.LoadJobConfig()
-        job_config.source_format = 'text/csv'
-        job = bigquery_client.load_table_from_file(
-            source_file, table_ref, job_config=job_config)
+    # with open(source_file_name, 'rb') as source_file:
+    # See https://cloud.google.com/bigquery/loading-data
+    job_config = bigquery.LoadJobConfig()
+    job_config.source_format = 'text/csv'
+    job = bigquery_client.load_table_from_file(
+            source, table_ref, job_config=job_config)
 
     job.result()  # Waits for job to complete
 
