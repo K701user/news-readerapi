@@ -114,18 +114,18 @@ def summarize():
     return result, 200
 
 
-@app.route('/add_record', methods=['POST'])
+@app.route('/add_record', methods=['GET'])
 def add_record():
     ra = sportslive.RecordAccumulation()
     """Given an date, records add to table ."""
-    day = request.args.get('date')
+    day = request.args.get('date').split("-")
     if day is None:
         return 'No provided.', 400
 
-    tdatetime = datetime.datetime.strptime(day, '%Y-%m-%d')
-    today = datetime.date(tdatetime.year, tdatetime.month, tdatetime.day)
+    day = datetime.date(day[0], day[1], day[2])
+    tdatetime = datetime.datetime.strptime(day, '%Y%m%d')
 
-    news_record = ra.news_check(today)
+    news_record = ra.news_check(day)
     # ra.save_csv(news_record, "news_record.csv")
 
     result = load_data_from_file("sportsagent",
@@ -135,8 +135,8 @@ def add_record():
     if result:
         return 'not found : %s' % day, 400
 
-    player_list = ra.get_player_dic(today)
-    player_record = ra.get_player_record(player_list, today)
+    player_list = ra.get_player_dic(day)
+    player_record = ra.get_player_record(player_list, day)
     # ra.save_csv(player_record, "player_record.csv")
 
     result = load_data_from_file("sportsagent",
