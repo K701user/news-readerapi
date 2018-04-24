@@ -114,7 +114,7 @@ def summarize():
     return result, 200
 
 
-@app.route('/add_record', methods=['GET'])
+@app.route('/add_record', methods=['POST'])
 def add_record():
     ra = sportslive.RecordAccumulation()
     """Given an date, records add to table ."""
