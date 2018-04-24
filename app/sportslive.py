@@ -221,7 +221,7 @@ class SportsLive:
         else:
             rowcount_str = "Full_text"
 
-        day = datetime.datetime.strptime('%Y-%m-%d')
+        # day = datetime.datetime.strptime(day, '%Y-%m-%d')
 
         if debug:
             myquery = """
