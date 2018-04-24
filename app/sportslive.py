@@ -221,7 +221,7 @@ class SportsLive:
         else:
             rowcount_str = "Full_text"
 
-        day = day.strftime('%Y%m%d')
+        day = datetime.datetime.strptime('%Y-%m-%d')
 
         if debug:
             myquery = """
@@ -275,7 +275,7 @@ class SportsLive:
         json_dict = {}
         client = bigquery.Client()
 
-        day = day.strftime('%Y%m%d')
+        day = datetime.datetime.strptime('%Y-%m-%d')
 
         if debug:
             myquery = """
