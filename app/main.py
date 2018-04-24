@@ -122,7 +122,7 @@ def add_record():
     if day is None:
         return 'No provided.', 400
 
-    tdatetime = datetime.datetime.strptime(day, '%Y%m%d')
+    tdatetime = datetime.datetime.strptime(day, '%Y-%m-%d')
     today = datetime.date(tdatetime.year, tdatetime.month, tdatetime.day)
 
     news_record = ra.news_check(today)
