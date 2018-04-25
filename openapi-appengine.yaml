@@ -32,17 +32,6 @@ paths:
           in: query
           required: true
           type: string
-        -
-          name: rowcount
-          in: query
-          required: true
-          type: integer
-        -
-          name: date
-          in: query
-          required: true
-          type: string
-          format: date
       responses:
         200:
           description: "Success."
@@ -60,17 +49,6 @@ paths:
           in: query
           required: true
           type: string
-        -
-          name: rowcount
-          in: query
-          required: true
-          type: integer
-        -
-          name: date
-          in: query
-          required: true
-          type: string
-          format: date
       responses:
         200:
           description: "Success."
@@ -88,12 +66,6 @@ paths:
           in: query
           required: true
           type: string
-        -
-          name: date
-          in: query
-          required: true
-          type: string
-          format: date
       responses:
         200:
           description: "Success."
@@ -111,12 +83,6 @@ paths:
           in: query
           required: true
           type: string
-        -
-          name: date
-          in: query
-          required: true
-          type: string
-          format: date
       responses:
         200:
           description: "Success."
@@ -164,15 +130,10 @@ paths:
       operationId: "Sammarize"
       parameters:
         -
-          name: text
+          name: query
           in: query
           required: true
           type: string
-        -
-          name: row
-          in: query
-          required: true
-          type: integer
       responses:
         200:
           description: "Success."
@@ -186,7 +147,7 @@ paths:
       operationId: "addrecord"
       parameters:
         -
-          name: date
+          name: query
           in: query
           required: true
           type: string
