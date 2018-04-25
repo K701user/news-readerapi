@@ -11,4 +11,4 @@ sklearn
 scipy
 lxml
 google-cloud-bigquery
-google-cloud-strage
+google-cloud-storage
