@@ -15,14 +15,18 @@ SL = sportslive.SportsLive()
 def newsloader():
     """Given an query, return that news."""
     query = request.args.get('query')
-    rowcount = request.args.get('rowcount')
-    day = request.args.get('date')
+    querylist = query.split('_')
+    query = querylist[0]
+    rowcount = int(querylist[1])
+    day = querylist[2]
+
     if query is None:
       return 'No provided.', 400
     if rowcount is None:
         rowcount = 2
     if day is None:
         day = datetime.date.today()
+        day = datetime.datetime.strptime(day, '%Y%m%d')
     result = SL.news_loader(query, rowcount, day)
     if result is None:
       return 'not found : %s' % query, 400
@@ -33,14 +37,18 @@ def newsloader():
 def newsloader_debug():
     """Given an query, return that news debug mode."""
     query = request.args.get('query')
-    rowcount = request.args.get('rowcount')
-    day = request.args.get('date')
+    querylist = query.split('_')
+    query = querylist[0]
+    rowcount = int(querylist[1])
+    day = querylist[2]
+
     if query is None:
       return 'No provided.', 400
     if rowcount is None:
         rowcount = 2
     if day is None:
         day = datetime.date.today()
+        day = datetime.datetime.strptime(day, '%Y%m%d')
     result = SL.news_loader(query, rowcount, day, debug=True)
     if result is None:
       return 'not found : %s' % query, 400
@@ -51,11 +59,16 @@ def newsloader_debug():
 def playerloader():
     """Given an query, return that news."""
     query = request.args.get('query')
-    day = request.args.get('date')
+    querylist = query.split('_')
+    query = querylist[0]
+    day = querylist[1]
+    
     if query is None:
         return 'No provided.', 400
     if day is None:
         day = datetime.date.today()
+        day = datetime.datetime.strptime(day, '%Y%m%d')
+        
     result = SL.player_loader(query, day)
     if result is None:
         return 'not found : %s' % query, 400
@@ -66,11 +79,16 @@ def playerloader():
 def playerloader_debug():
     """Given an query, return that news debug mode."""
     query = request.args.get('query')
-    day = request.args.get('date')
+    querylist = query.split('_')
+    query = querylist[0]
+    day = querylist[1]
+
     if query is None:
       return 'No provided.', 400
     if day is None:
         day = datetime.date.today()
+        day = datetime.datetime.strptime(day, '%Y%m%d')
+        
     result = SL.player_loader(query, day, debug=True)
     if result is None:
       return 'not found : %s' % query, 400
@@ -105,7 +123,10 @@ def newsreader_debug():
 def summarize():
     """Given an query, return that news."""
     query = request.args.get('query')
-    rowcount = request.args.get('row')
+    querylist = query.split('_')
+    query = querylist[0]
+    rowcount = int(querylist[1])
+    
     if query is None:
       return 'No provided.', 400
     result = SL.sammarize(query, rowcount)
