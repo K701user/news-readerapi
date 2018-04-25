@@ -22,7 +22,7 @@ runtime_config:
 endpoints_api_service:
   # This is a template. Use the deploy_app.sh script to deploy this app.
   name: "sports-agent-199307.appspot.com"
-  config_id: "2018-04-25r7"
+  config_id: "2018-04-25r6"
 
 health_check:
   enable_health_check: False
