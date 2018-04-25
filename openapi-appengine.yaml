@@ -18,7 +18,6 @@ info:
   description: "Get the news."
   version: "1.0.0"
 # This field will be replaced by the deploy_api.sh script.
-basePath: /v1
 x-google-allow: all
 host: "sports-agent-199307.appspot.com"
 schemes:
