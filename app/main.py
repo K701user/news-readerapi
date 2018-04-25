@@ -26,7 +26,7 @@ def newsloader():
         rowcount = 2
     if day is None:
         day = datetime.date.today()
-        day = datetime.datetime.strptime(day, '%Y%m%d')
+        day = day.strftime('%Y%m%d')
     result = SL.news_loader(query, rowcount, day)
     if result is None:
       return 'not found : %s' % query, 400
@@ -48,7 +48,7 @@ def newsloader_debug():
         rowcount = 2
     if day is None:
         day = datetime.date.today()
-        day = datetime.datetime.strptime(day, '%Y%m%d')
+        day = day.strftime('%Y%m%d')
     result = SL.news_loader(query, rowcount, day, debug=True)
     if result is None:
       return 'not found : %s' % query, 400
@@ -67,7 +67,7 @@ def playerloader():
         return 'No provided.', 400
     if day is None:
         day = datetime.date.today()
-        day = datetime.datetime.strptime(day, '%Y%m%d')
+        day = day.strftime('%Y%m%d')
         
     result = SL.player_loader(query, day)
     if result is None:
@@ -87,7 +87,7 @@ def playerloader_debug():
       return 'No provided.', 400
     if day is None:
         day = datetime.date.today()
-        day = datetime.datetime.strptime(day, '%Y%m%d')
+        day = day.strftime('%Y%m%d')
         
     result = SL.player_loader(query, day, debug=True)
     if result is None:
@@ -144,7 +144,7 @@ def add_record():
         return 'No provided.', 400
 
     day = datetime.date(day[0], day[1], day[2])
-    tdatetime = datetime.datetime.strptime(day, '%Y%m%d')
+    tdatetime = day.strftime('%Y%m%d')
 
     news_record = ra.news_check(day)
     # ra.save_csv(news_record, "news_record.csv")
