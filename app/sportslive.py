@@ -13,7 +13,10 @@ from janome.tokenizer import Tokenizer
 from requests_oauthlib import OAuth1Session
 from summpy.lexrank import summarize
 from google.cloud import bigquery
+from google.oauth2 import service_account
 
+
+credentials = service_account.Credentials.from_service_account_file('Sports-Agent-f6e6a0a6dbc3.json.json')
 
 # twitterAPI
 oath_key_dict = {
@@ -214,7 +217,7 @@ class SportsLive:
         keyword = keyword.split(' ')
         output_text = ""
         json_dict = {}
-        client = bigquery.Client()
+        client = bigquery.Client(credentials= credentials)
 
         if 1 <= rowcount < 5:
             rowcount_str = "row{}_text".format(str(rowcount))
@@ -273,7 +276,7 @@ class SportsLive:
         keyword = keyword.split(' ')
         output_text = ""
         json_dict = {}
-        client = bigquery.Client()
+        client = bigquery.Client(credentials= credentials)
 
         day = datetime.datetime.strptime('%Y-%m-%d')
 
