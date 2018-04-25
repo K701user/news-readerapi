@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "sports-agent-199307",
+  "private_key_id": "f6e6a0a6dbc33d777365c2a1c282d922db7b9032",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCmEuzixtM1/8l5\nFzZYemXiYKPqNcFe08lvvlRm/y0E+5ArvlbREb8T1S718d/SEWSe5k9mrmKnEmwt\nvHhMZtdzIY+WhQrM42XcyWg3uQmajf74ZAdDHW0j+fDlFsjW1sxZOlyKwuTfaoPT\nOeCslRGGg9F/+hD+x1aPTc0TVeaQ7SeK/YbCVZSdiZuLAEZZ14Yp/KQu1noSzNI1\nZSwhvJAd9Hrq7w0V0fUAWdO4prJ7YzoF6gvoS308LeT25BljidRctiRIAgw3hZlq\nZ1oxWf8pofcv6StZA+nIosgVK63v4tBORxrfgroMHhgQC/gRnr9gjO9hQHHUkJNM\nR4yzOsEfAgMBAAECggEACtIE2Sm3LTeDOv6GLfGbncpKI8Jo3PLTlxJBkYxitIZn\neFIoeeq8FmC3dJLT0G4NrkS3O6t1BgmvPrOe6utwcjHnlxkIAR13z5DX13mY5JcH\n28s4pejO6Z8pUOPRJh5MpiulR+022E+qUyLcPqJfx/HivoHehZsbSq75A59/LEYM\net3oM0436Yqt1i9o5k6lXjttDHroeg+H2V/bGNXpt37+3CQAvWStfCSvUWsB5kqI\nPHzLG+ZZIpwQCK+L3XYUqdVL5BYb8CpyN3UwznJ6ovvT9HSkzIOrknzcDVNG0wuf\n0/0f/Yk+KVjTNCYuwGuNLBPzj1/IVMkAvFw5PIUXIQKBgQDZv1jJmEl5Ifhf7fZr\nmetkse8A7i1Tn48J5xwfowDPT+cKSPNbou4+zbDczg3wxYdKGeqkyphj8SQaBRGl\nQzeOKtLqigRDrSSezIu/RqYe01eLgqGr9jQBNJUjUEyA5OY0y9Bf3fiUomcoCReo\nYlIRO6JASI/hXOs0MZCujQmdBwKBgQDDP7CLsK1O79dLoQpjlGxzMULMoDqKCMOa\ncoPGTvM8lWn8fsyEZnREHiVW9IeH9STPAaOUKMN2wzuD6ksL3gQ1LF/TI6wBesSZ\nI3gRKokf620jHdXfAHX5PGA6CpPdpUd/HXIOLm454a6C2qAz80SrxK87bWILGPW8\nyhRrO/7NKQKBgF0wlz8v/cHp1/K2VRAX/7ZIsJElXiC72OvUDSU9Dcur1qWAMya0\nxGH8hgT56t1wrEX6cYG1cyLSwTChmruv2MbvbPUTvF96aoHL6MMj6VSn/n+mmKqP\n5BHf/zPt2dAQJrXRxIxC43A5UQzBV26pJZZaf0Yjx/AbZE4iKFmL4uFhAoGAOR+b\nIWNxcRTOonvdNEEqcZFJ/+ApAFWMFNXII+7ZTzJPreXTJDFtdrhzKDumo2pfeIj8\nOM6sUUTRVsjnZ/Nuu7fd2UIogs5OUpeD+1G8iLAyYAHMns/dtCur449Qr5o5jsEo\nq2l+KkUS74nTMR/NSYvj0Lkx5BlLXA6rZqxI4fECgYAwjiMdfCPT0s7c8SerXvF4\nsDl9KOTgmHsAIvAhryxm76FxLQS2w5cK2VEbF0Gbxw13ymFDS+n+oP1v0o+bwKxD\n+whV/8Y93IoMq/Q3sHshQ+p3rC99y7L7vBwb7xO5RB6+ymm9Hcpre3vKtehXKjhs\nxeQgYtA6K2qggPvH5UNifA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "sports-agent-199307@appspot.gserviceaccount.com",
+  "client_id": "101272116504145315023",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sports-agent-199307%40appspot.gserviceaccount.com"
+}
