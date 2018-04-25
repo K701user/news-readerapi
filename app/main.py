@@ -139,7 +139,7 @@ def summarize():
 def add_record():
     ra = sportslive.RecordAccumulation()
     """Given an date, records add to table ."""
-    day = request.args.get('date').split("-")
+    day = request.args.get('query').split("-")
     if day is None:
         return 'No provided.', 400
 
