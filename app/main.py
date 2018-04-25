@@ -6,6 +6,7 @@ from flask import Flask
 from flask import request
 import sportslive
 from google.cloud import bigquery
+from google.cloud import storage
 
 app = Flask(__name__)
 
@@ -170,6 +171,9 @@ def add_record():
 
 
 def load_data_from_file(dataset_id, table_id, source):
+    storage_client = storage.Client()
+    # Make an authenticated API request
+    buckets = list(storage_client.list_buckets())
     bigquery_client = bigquery.Client()
     dataset_ref = bigquery_client.dataset(dataset_id)
     table_ref = dataset_ref.table(table_id)
