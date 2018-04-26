@@ -150,9 +150,9 @@ def add_record():
     news_record = ra.news_check(day)
     # ra.save_csv(news_record, "news_record.csv")
 
-    result = load_data_from_file("sportsagent",
-                                 "newsrecord${}".format(tdatetime),
-                                 news_record)
+    result = self.load_data("sportsagent",
+                            "newsrecord${}".format(tdatetime),
+                            news_record)
 
     if result:
         return 'not found : %s' % day, 400
@@ -161,16 +161,16 @@ def add_record():
     player_record = ra.get_player_record(player_list, day)
     # ra.save_csv(player_record, "player_record.csv")
 
-    result = load_data_from_file("sportsagent",
-                                 "playerrecord${}".format(tdatetime),
-                                 player_record)
+    result = self.load_data("sportsagent",
+                            "playerrecord${}".format(tdatetime),
+                            player_record)
 
     if result:
         return 'not found : %s' % day, 400
     return result, 200
 
 
-def load_data_from_file(dataset_id, table_id, source):
+def load_data(dataset_id, table_id, source):
     storage_client = storage.Client()
     # Make an authenticated API request
     buckets = list(storage_client.list_buckets())
