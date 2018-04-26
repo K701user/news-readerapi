@@ -150,9 +150,9 @@ def add_record():
     news_record = ra.news_check(day)
     # ra.save_csv(news_record, "news_record.csv")
 
-    result = self.load_data("sportsagent",
-                            "newsrecord${}".format(tdatetime),
-                            news_record)
+    result = load_data("sportsagent",
+                       "newsrecord${}".format(tdatetime),
+                       news_record)
 
     if result:
         return 'not found : %s' % day, 400
@@ -161,9 +161,9 @@ def add_record():
     player_record = ra.get_player_record(player_list, day)
     # ra.save_csv(player_record, "player_record.csv")
 
-    result = self.load_data("sportsagent",
-                            "playerrecord${}".format(tdatetime),
-                            player_record)
+    result = load_data("sportsagent",
+                       "playerrecord${}".format(tdatetime),
+                       player_record)
 
     if result:
         return 'not found : %s' % day, 400
