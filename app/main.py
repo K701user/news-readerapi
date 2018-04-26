@@ -1,7 +1,7 @@
 # Copyright 2018 Ct,innovation. All Rights Reserved.
 #
 import datetime
-
+import json
 from flask import Flask
 from flask import request
 import sportslive
@@ -138,15 +138,35 @@ def summarize():
 
 @app.route('/add-record', methods=['GET'])
 def add_record():
+    json_dict = {}
     ra = sportslive.RecordAccumulation()
     """Given an date, records add to table ."""
-    day = request.args.get('query').split("-")
-    if day is None:
-        return 'No provided.', 400
-
-    day = datetime.date(day[0], day[1], day[2])
-    tdatetime = day.strftime('%Y%m%d')
-
+    day = None
+    try:
+        day = request.args.get('query').split("-")
+        if day is None:
+            return 'No provided.', 400
+    except:
+        json_dict.update({'error':
+                         {
+                         'text':'Dont get the day'
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data
+    
+    try:
+        day = datetime.date(day[0], day[1], day[2])
+        tdatetime = day.strftime('%Y%m%d')
+    except:
+        json_dict.update({'error':
+                         {
+                         'text':'Dont get the day'
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data
+    
     news_record = ra.news_check(day)
     # ra.save_csv(news_record, "news_record.csv")
 
