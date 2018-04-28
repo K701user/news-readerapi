@@ -146,18 +146,9 @@ def add_record():
     if day is None:
         return 'No provided.', 400
     
-    try:
-        day = datetime.date(int(day[0]), int(day[1]), int(day[2]))
-        tdatetime = day.strftime('%Y%m%d')
-    except:
-        json_dict.update({'error':
-                         {
-                         'text':type(day)
-                         }}
-                         )
-        encode_json_data = json.dumps(json_dict)
-        return encode_json_data
-    
+    day = datetime.date(int(day[0]), int(day[1]), int(day[2]))
+    tdatetime = day.strftime('%Y%m%d')
+ 
     try:
         news_record = ra.news_check(day)
         # ra.save_csv(news_record, "news_record.csv")
@@ -165,7 +156,7 @@ def add_record():
     except:
         json_dict.update({'error':
                          {
-                         'text':'Dont get the news'
+                         'text':tdatetime
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
