@@ -141,19 +141,10 @@ def add_record():
     json_dict = {}
     ra = sportslive.RecordAccumulation()
     """Given an date, records add to table ."""
-    day = None
-    try:
-        day = request.args.get('query').split('-')
-        if day is None:
-            return 'No provided.', 400
-    except:
-        json_dict.update({'error':
-                         {
-                         'text':'date dont get it'
-                         }}
-                         )
-        encode_json_data = json.dumps(json_dict)
-        return encode_json_data
+
+    day = request.args.get('query').split('-')
+    if day is None:
+        return 'No provided.', 400
     
     try:
         day = datetime.date(int(day[0]), int(day[1]), int(day[2]))
@@ -171,9 +162,6 @@ def add_record():
         news_record = ra.news_check(day)
         # ra.save_csv(news_record, "news_record.csv")
 
-        result = load_data("sportsagent",
-                           "newsrecord${}".format(tdatetime),
-                           news_record)
     except:
         json_dict.update({'error':
                          {
@@ -182,7 +170,19 @@ def add_record():
                          )
         encode_json_data = json.dumps(json_dict)
         return encode_json_data        
-        
+    try:
+        result = load_data("sportsagent",
+                           "newsrecord${}".format(tdatetime),
+                           news_record)    
+    except:
+        json_dict.update({'error':
+                         {
+                         'text':'Update error'
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data        
+    
     if result:
         return 'not found : %s' % day, 400
 
