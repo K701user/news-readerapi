@@ -156,12 +156,12 @@ def add_record():
         return encode_json_data
     
     try:
-        day = datetime.datetime.date(int(day[0]), int(day[1]), int(day[2]))
+        day = datetime.date(int(day[0]), int(day[1]), int(day[2]))
         tdatetime = day.strftime('%Y%m%d')
     except:
         json_dict.update({'error':
                          {
-                         'text':'format error'
+                         'text':type(day)
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
