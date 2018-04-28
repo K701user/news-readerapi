@@ -149,7 +149,7 @@ def add_record():
     except:
         json_dict.update({'error':
                          {
-                         'text':str(day)
+                         'text':'date dont get it'
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
