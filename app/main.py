@@ -143,13 +143,13 @@ def add_record():
     """Given an date, records add to table ."""
     day = None
     try:
-        day = request.args.get('query').split("-")
+        day = request.args.get('query')
         if day is None:
             return 'No provided.', 400
     except:
         json_dict.update({'error':
                          {
-                         'text':'Dont get the day'
+                         'text':str(day)
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
@@ -161,7 +161,7 @@ def add_record():
     except:
         json_dict.update({'error':
                          {
-                         'text':'Dont get the day'
+                         'text':str(tdatetime) + 'format error'
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
