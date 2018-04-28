@@ -167,13 +167,22 @@ def add_record():
         encode_json_data = json.dumps(json_dict)
         return encode_json_data
     
-    news_record = ra.news_check(day)
-    # ra.save_csv(news_record, "news_record.csv")
+    try:
+        news_record = ra.news_check(day)
+        # ra.save_csv(news_record, "news_record.csv")
 
-    result = load_data("sportsagent",
-                       "newsrecord${}".format(tdatetime),
-                       news_record)
-
+        result = load_data("sportsagent",
+                           "newsrecord${}".format(tdatetime),
+                           news_record)
+    except:
+        json_dict.update({'error':
+                         {
+                         'text':'Dont get the news'
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data        
+        
     if result:
         return 'not found : %s' % day, 400
 
