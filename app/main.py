@@ -143,7 +143,7 @@ def add_record():
     """Given an date, records add to table ."""
     day = None
     try:
-        day = request.args.get('query')
+        day = request.args.get('query').split('-')
         if day is None:
             return 'No provided.', 400
     except:
