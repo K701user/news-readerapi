@@ -16,7 +16,7 @@ from google.cloud import bigquery
 from google.oauth2 import service_account
 
 
-credentials = service_account.Credentials.from_service_account_file('Sports-Agent-f6e6a0a6dbc3.json.json')
+credentials = service_account.Credentials.from_service_account_file('Sports-Agent-f6e6a0a6dbc3.json')
 
 # twitterAPI
 oath_key_dict = {
