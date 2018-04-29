@@ -150,8 +150,8 @@ def add_record():
     tdatetime = day.strftime('%Y%m%d')
  
     try:
-        news_record = ra.news_check(day)
-        ra.save_csv(news_record, "news_record.csv")
+        news_record, news_record_tuple = ra.news_check(day)
+        # ra.save_csv(news_record, "news_record.csv")
 
     except:
         json_dict.update({'error':
@@ -164,7 +164,7 @@ def add_record():
     try:
         result = load_data("sportsagent",
                            "newsrecord${}".format(tdatetime),
-                           news_record)    
+                           news_record_tuple)    
     except:
         json_dict.update({'error':
                          {
@@ -178,12 +178,12 @@ def add_record():
         return 'not found : %s' % day, 400
 
     player_list = ra.get_player_dic(day)
-    player_record = ra.get_player_record(player_list, day)
-    ra.save_csv(player_record, "player_record.csv")
+    player_record, player_record_tuple = ra.get_player_record(player_list, day)
+    # ra.save_csv(player_record, "player_record.csv")
 
     result = load_data("sportsagent",
                        "playerrecord${}".format(tdatetime),
-                       player_record)
+                       player_record_tuple)
 
     if result:
         return 'not found : %s' % day, 400
@@ -198,12 +198,9 @@ def load_data(dataset_id, table_id, source):
     dataset_ref = bigquery_client.dataset(dataset_id)
     table_ref = dataset_ref.table(table_id)
 
-    # with open(source_file_name, 'rb') as source_file:
-    # See https://cloud.google.com/bigquery/loading-data
-    job_config = bigquery.LoadJobConfig()
-    job_config.source_format = 'text/csv'
-    job = bigquery_client.load_table_from_file(
-            source, table_ref, job_config=job_config)
+    errors = bigquery_client.insert_rows(table_ref, source) 
+    # job = bigquery_client.load_table_from_file(
+    #         source, table_ref, job_config=job_config)
 
     job.result()  # Waits for job to complete
 
