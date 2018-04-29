@@ -444,6 +444,7 @@ class RecordAccumulation:
 
     def get_player_record(self, player_dic, date):
         rec_list = [["name", "player_type", "record"]]
+        rec_tuple = []
 
         for key in player_dic.keys():
             req = requests.get(player_dic[key][0])
@@ -458,16 +459,22 @@ class RecordAccumulation:
 
                 if "batter" in player_dic[key][1]:
                     table = div.findAll("table", class_="tbl-stats tbl-stats-batting")[0]
-                    rec_list.append([key] + self.get_record(table, "b", date))
+                    rec = [key] + self.get_record(table, "b", date)
+                    rec_list.append(rec)
+                    rec_tuple.append(tuple(rec))
                 else:
                     table = div.findAll("table", class_="tbl-stats tbl-stats-pitching")[0]
-                    rec_list.append([key] + self.get_record(table, "p", date))
+                    rec = [key] + self.get_record(table, "p", date)
+                    rec_list.append(rec)
+                    rec_tuple.append(tuple(rec))
                     table_bat = div.findAll("table", class_="tbl-stats tbl-stats-batting")[0]
-                    rec_list.append([key] + self.get_record(table_bat, "b", date))
+                    rec = [key] + self.get_record(table_bat, "b", date)
+                    rec_list.append(rec)
+                    rec_tuple.append(tuple(rec))
             except:
                 continue
 
-        return rec_list
+        return rec_list, rec_tuple
 
     @staticmethod
     def get_record(table, player_type, date):
@@ -517,6 +524,7 @@ class RecordAccumulation:
         news_dict = {}
         output_text = ""
         news_list = [["title", "url", "Full_text", "row1_text", "row2_text", "row3_text", "row4_text"]]
+        news_tuple = []
 
         for rss in rss_news:
             resp = requests.get(rss)
@@ -554,8 +562,10 @@ class RecordAccumulation:
                 news.append(output_text)
 
             news_list.append(news)
+            tnews = tuple(news)
+            news_tuple.append(tnews)
 
-        return news_list
+        return news_list, news_tuple
 
     @staticmethod
     def sammarize(text, rowcount):
