@@ -162,8 +162,7 @@ def add_record():
         encode_json_data = json.dumps(json_dict)
         return encode_json_data        
     try:
-        result = load_data("sportsagent",
-                           "newsrecord${}".format(tdatetime),
+        result = load_data("newsrecord${}".format(tdatetime),
                            news_record_tuple)    
     except:
         json_dict.update({'error':
@@ -181,8 +180,7 @@ def add_record():
     player_record, player_record_tuple = ra.get_player_record(player_list, day)
     # ra.save_csv(player_record, "player_record.csv")
 
-    result = load_data("sportsagent",
-                       "playerrecord${}".format(tdatetime),
+    result = load_data("playerrecord${}".format(tdatetime),
                        player_record_tuple)
 
     if result:
@@ -190,24 +188,11 @@ def add_record():
     return result, 200
 
 
-def load_data(dataset_id, table_id, source):
-    storage_client = bigquery.Client(project='sports-agent-199307')
-    # Make an authenticated API request
-    buckets = list(storage_client.list_buckets())
-    bigquery_client = bigquery.Client()
-    dataset_ref = bigquery_client.dataset(dataset_id)
-    table_ref = dataset_ref.table(table_id)
+def load_data(table_id, source):
+    bigquery_client = bigquery.Client()    
+    errors = bigquery_client.insert_rows(table_id, source) 
 
-    errors = bigquery_client.insert_rows(table_ref, source) 
-    # job = bigquery_client.load_table_from_file(
-    #         source, table_ref, job_config=job_config)
-
-    job.result()  # Waits for job to complete
-
-    print('Loaded {} rows into {}:{}.'.format(
-        job.output_rows, dataset_id, table_id))
-
-    return job.done()
+    return errors
 
 
 if __name__ == '__main__':
