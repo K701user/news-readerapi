@@ -151,7 +151,7 @@ def add_record():
  
     try:
         news_record, news_record_tuple = ra.news_check(day)
-        # ra.save_csv(news_record, "news_record.csv")
+        ra.save_csv(news_record, "news_record.csv")
 
     except:
         json_dict.update({'error':
@@ -178,7 +178,7 @@ def add_record():
 
     player_list = ra.get_player_dic(day)
     player_record, player_record_tuple = ra.get_player_record(player_list, day)
-    # ra.save_csv(player_record, "player_record.csv")
+    ra.save_csv(player_record, "player_record.csv")
 
     result = load_data("playerrecord${}".format(tdatetime),
                        player_record_tuple)
