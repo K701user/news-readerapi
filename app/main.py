@@ -148,26 +148,10 @@ def add_record():
     
     day = datetime.date(int(day[0]), int(day[1]), int(day[2]))
     tdatetime = day.strftime('%Y%m%d')
- 
-    try:
-        news_record, news_record_tuple = ra.news_check(day)
-        # ra.save_csv(news_record, "news_record.csv")
-        json_dict.update({'test':
-                         {
-                         'text':news_record_tuple
-                         }}
-                         )
-        encode_json_data = json.dumps(json_dict)
-        return encode_json_data , 200
-
-    except:
-        json_dict.update({'error':
-                         {
-                         'text':'save error'
-                         }}
-                         )
-        encode_json_data = json.dumps(json_dict)
-        return encode_json_data        
+    
+    news_record, news_record_tuple = ra.news_check(day)
+    # ra.save_csv(news_record, "news_record.csv")
+      
     try:
         result = load_data("newsrecord${}".format(tdatetime),
                            news_record_tuple)    
@@ -179,9 +163,6 @@ def add_record():
                          )
         encode_json_data = json.dumps(json_dict)
         return encode_json_data        
-    
-    if result:
-        return 'not found : %s' % day, 400
 
     player_list = ra.get_player_dic(day)
     player_record, player_record_tuple = ra.get_player_record(player_list, day)
@@ -190,9 +171,13 @@ def add_record():
     result = load_data("playerrecord${}".format(tdatetime),
                        player_record_tuple)
 
-    if result:
-        return 'not found : %s' % day, 400
-    return result, 200
+    json_dict.update({'completed':
+                         {
+                         'text':player_record_tuple
+                         }}
+                         )
+    encode_json_data = json.dumps(json_dict)
+    return encode_json_data, 200
 
 
 def load_data(table_id, source):
