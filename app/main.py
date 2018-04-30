@@ -189,14 +189,13 @@ def add_record():
 
 
 def load_data(table_id, source):
-    try:
-        bigquery_client = bigquery.Client()
-        # bigquery_client = bigquery.Client(project='sports-agent-199307')
-        dataset_ref = bigquery_client.dataset("sportsagent")
-        table_ref = dataset_ref.table(table_id)
-        table = bigquery_client.get_table(table_ref)
-    except:
-        raise NameError(str(table.table_id))
+    # bigquery_client = bigquery.Client()
+    # bigquery_client = bigquery.Client(project='sports-agent-199307')
+    json_key = 'Sports-Agent-f6e6a0a6dbc3.json'
+    bigquery_client = bigquery.client.from_service_account_json(json_key, project='sports-agent-199307')
+    dataset_ref = bigquery_client.dataset("sportsagent")
+    table_ref = dataset_ref.table(table_id)
+    table = bigquery_client.get_table(table_ref)
     
     try:
         errors = bigquery_client.insert_rows(table, source) 
