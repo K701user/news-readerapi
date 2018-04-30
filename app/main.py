@@ -191,10 +191,9 @@ def load_data(table_id, source):
     except:
         raise NameError('client dont getting')
         
-    table_ref = dataset_ref.table(table_id)
-    table = bigquery_client.get_table(table_ref)
-    
     try:
+        table_ref = dataset_ref.table(table_id)
+        table = bigquery_client.get_table(table_ref)
         errors = bigquery_client.insert_rows(table, source) 
     except:
         raise NameError(type(source))
