@@ -192,8 +192,12 @@ def load_data(table_id, source):
     # bigquery_client = bigquery.Client()
     # bigquery_client = bigquery.Client(project='sports-agent-199307')
     json_key = 'Sports-Agent-f6e6a0a6dbc3.json'
-    bigquery_client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
-    dataset_ref = bigquery_client.dataset("sportsagent")
+    try:
+        bigquery_client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
+        dataset_ref = bigquery_client.dataset("sportsagent")
+    except:
+        raise NameError('client dont getting')
+        
     table_ref = dataset_ref.table(table_id)
     table = bigquery_client.get_table(table_ref)
     
