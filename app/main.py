@@ -164,10 +164,10 @@ def add_record():
     try:
         result = load_data("newsrecord${}".format(tdatetime),
                            news_record_tuple)    
-    except:
+    except NameError as e:
         json_dict.update({'error':
                          {
-                         'text':'Update error'
+                         'text':e.args
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
@@ -194,26 +194,13 @@ def load_data(table_id, source):
         datasets = list(client.list_datasets())
         table_ref = datasets[0].table(table_id)
     except:
-        json_dict.update({'error':
-                         {
-                         'text':'table get error'
-                         }}
-                         )
-        encode_json_data = json.dumps(json_dict)
-        return encode_json_data      
+        raise NameError("table get error")
     
     try:
         table = bigquery.Table(table_ref)
         errors = bigquery_client.insert_rows(table, source) 
     except:
-
-        json_dict.update({'error':
-                         {
-                         'text':'upload error'
-                         }}
-                         )
-        encode_json_data = json.dumps(json_dict)
-        return encode_json_data
+        raise NameError("upload code error")
     
     return errors
 
