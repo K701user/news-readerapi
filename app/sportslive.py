@@ -511,7 +511,7 @@ class RecordAccumulation:
 
         record = record.replace("\t", "").replace("  ", "")
 
-        return [player_type, record]
+        return [str(player_type), str(record)]
 
     @staticmethod
     def save_csv(table, filename):
@@ -547,7 +547,7 @@ class RecordAccumulation:
         news_key_list = [l for l in news_dict.keys()]
 
         for list_key in news_key_list:
-            news = [list_key, news_dict[list_key]]
+            news = [str(list_key), str(news_dict[list_key])]
             text = ""
             resp = requests.get(news_dict[list_key])
             soup = BeautifulSoup(resp.text, "html.parser")
@@ -559,7 +559,7 @@ class RecordAccumulation:
             for r_count in range(1, 5):
                 analysis_text = self.sammarize(text, r_count)
                 output_text = ''.join(analysis_text)
-                news.append(output_text)
+                news.append(str(output_text))
 
             news_list.append(news)
             tnews = tuple(news)
