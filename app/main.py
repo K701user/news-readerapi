@@ -190,14 +190,14 @@ def add_record():
 
 def load_data(table_id, source):
     try:
-        bigquery_client = bigquery.Client() 
-        datasets = list(client.list_datasets())
-        table_ref = datasets[0].table(table_id)
+        bigquery_client = bigquery.Client()
+        dataset_ref = bigquery_client.dataset("sportsagent")
+        table_ref = dataset_ref.table(table_id)
+        table = bigquery_client.get_table(table_ref)
     except:
         raise NameError("table get error")
     
-    try:
-        table = bigquery.Table(table_ref)
+    try:)
         errors = bigquery_client.insert_rows(table, source) 
     except:
         raise NameError("upload code error")
