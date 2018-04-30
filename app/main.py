@@ -196,7 +196,7 @@ def load_data(table_id, source):
         table_ref = dataset_ref.table(table_id)
         table = bigquery_client.get_table(table_ref)
     except:
-        raise NameError(table.table_id)
+        raise NameError(str(table.table_id))
     
     try:
         errors = bigquery_client.insert_rows(table, source) 
