@@ -183,7 +183,6 @@ class SportsLive:
                 break
 
             news_key_list = [l for l in news_dict.keys() if key in l]
-            print(news_key_list)
 
             for list_key in news_key_list:
                 text = ""
