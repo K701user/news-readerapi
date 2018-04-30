@@ -7,7 +7,9 @@ from flask import request
 import sportslive
 from google.cloud import bigquery
 from google.cloud import storage
+from google.oauth2 import service_account
 
+credential = service_account.Credentials.from_authorized_user_file('Sports-Agent-f6e6a0a6dbc3.json')
 app = Flask(__name__)
 
 SL = sportslive.SportsLive()
@@ -186,7 +188,7 @@ def load_data(table_id, source):
     json_key = 'Sports-Agent-f6e6a0a6dbc3.json'
     try:
         # bigquery_client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
-        bigquery_client = bigquery.Client(project='sports-agent-199307')
+        bigquery_client = bigquery.Client(project='sports-agent-199307', credentials=credential)
         dataset_ref = bigquery_client.dataset("sportsagent")
     except:
         raise NameError('client dont getting')
