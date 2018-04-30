@@ -204,7 +204,7 @@ def load_data(table_id, source):
     try:
         errors = bigquery_client.insert_rows(table, source) 
     except:
-        raise NameError(str(source))
+        raise NameError(type(source))
     
     return errors
 
