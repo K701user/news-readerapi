@@ -459,16 +459,16 @@ class RecordAccumulation:
 
                 if "batter" in player_dic[key][1]:
                     table = div.findAll("table", class_="tbl-stats tbl-stats-batting")[0]
-                    rec = [key] + self.get_record(table, "b", date)
+                    rec = [str(key)] + self.get_record(table, "b", date)
                     rec_list.append(rec)
                     rec_tuple.append(tuple(rec))
                 else:
                     table = div.findAll("table", class_="tbl-stats tbl-stats-pitching")[0]
-                    rec = [key] + self.get_record(table, "p", date)
+                    rec = [str(key)] + self.get_record(table, "p", date)
                     rec_list.append(rec)
                     rec_tuple.append(tuple(rec))
                     table_bat = div.findAll("table", class_="tbl-stats tbl-stats-batting")[0]
-                    rec = [key] + self.get_record(table_bat, "b", date)
+                    rec = [str(key)] + self.get_record(table_bat, "b", date)
                     rec_list.append(rec)
                     rec_tuple.append(tuple(rec))
             except:
