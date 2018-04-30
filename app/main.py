@@ -191,14 +191,11 @@ def add_record():
 def load_data(table_id, source):
     try:
         bigquery_client = bigquery.Client(project='sports-agent-199307')
-    except:
-        raise NameError("project get error")
-    try:
         dataset_ref = bigquery_client.dataset("sportsagent")
         table_ref = dataset_ref.table(table_id)
         table = bigquery_client.get_table(table_ref)
     except:
-        raise NameError("table get error")
+        raise NameError(str(source))
     
     try:
         errors = bigquery_client.insert_rows(table, source) 
