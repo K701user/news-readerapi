@@ -200,7 +200,7 @@ def load_data(table_id, source):
     except:
         raise NameError("table get error")
     
-    try:)
+    try:
         errors = bigquery_client.insert_rows(table, source) 
     except:
         raise NameError("upload code error")
