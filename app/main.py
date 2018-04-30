@@ -151,7 +151,14 @@ def add_record():
  
     try:
         news_record, news_record_tuple = ra.news_check(day)
-        ra.save_csv(news_record, "news_record.csv")
+        # ra.save_csv(news_record, "news_record.csv")
+        json_dict.update({'test':
+                         {
+                         'text':news_record_tuple
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data , 200
 
     except:
         json_dict.update({'error':
