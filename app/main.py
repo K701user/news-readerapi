@@ -189,8 +189,11 @@ def add_record():
 
 
 def load_data(table_id, source):
-    bigquery_client = bigquery.Client()    
-    errors = bigquery_client.insert_rows(table_id, source) 
+    bigquery_client = bigquery.Client() 
+    datasets = list(client.list_datasets())
+    table_ref = datasets[0].table(table_id)
+    table = bigquery.Table(table_ref)
+    errors = bigquery_client.insert_rows(table, source) 
 
     return errors
 
