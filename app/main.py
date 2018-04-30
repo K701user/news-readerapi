@@ -189,12 +189,32 @@ def add_record():
 
 
 def load_data(table_id, source):
-    bigquery_client = bigquery.Client() 
-    datasets = list(client.list_datasets())
-    table_ref = datasets[0].table(table_id)
-    table = bigquery.Table(table_ref)
-    errors = bigquery_client.insert_rows(table, source) 
+    try:
+        bigquery_client = bigquery.Client() 
+        datasets = list(client.list_datasets())
+        table_ref = datasets[0].table(table_id)
+    except:
+        json_dict.update({'error':
+                         {
+                         'text':'table get error'
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data      
+    
+    try:
+        table = bigquery.Table(table_ref)
+        errors = bigquery_client.insert_rows(table, source) 
+    except:
 
+        json_dict.update({'error':
+                         {
+                         'text':'upload error'
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data
+    
     return errors
 
 
