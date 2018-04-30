@@ -12,4 +12,3 @@ scipy
 lxml
 google-cloud-bigquery
 google-cloud-storage
-gcloud
