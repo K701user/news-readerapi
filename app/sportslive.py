@@ -211,10 +211,9 @@ class SportsLive:
 
     def news_loader(self, keyword, rowcount, day, debug=False):
         news_dict = {}
-        keyword = keyword.split(' ')
+        # keyword = keyword.split(' ')
         output_text = ""
         json_dict = {}
-        client = bigquery.Client(project='sports-agent-199307')
 
         if 1 <= rowcount < 5:
             rowcount_str = "row{}_text".format(str(rowcount))
@@ -240,6 +239,7 @@ class SportsLive:
                         WHERE title like '%{2}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(rowcount_str, day, str(keyword))
         try:
+            client = bigquery.Client(project='sports-agent-199307')
             query_job = client.query(myquery)
             results = query_job.result()  # Waits for job to complete.
         except:
@@ -247,7 +247,7 @@ class SportsLive:
             
         if 1 <= rowcount < 5:
             # random select for results
-            randindex = random.randint(0, len(results))
+            randindex = random.randint(0, len(results) - 1)
             output_text = results[randindex].text
         else:
             text = "".join([re.text for re in results])
