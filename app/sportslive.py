@@ -496,7 +496,7 @@ class RecordAccumulation:
                              + td[6].text + td[6].nextSibling + "に対して" \
                              + td[11].text + td[11].nextSibling \
                              + td[7].text + td[7].nextSibling
-                    if td[2].text == "●":
+                    if "●" in td[2].text:
                         record += "で、負けました。"
                     else:
                         record += "で、勝ちました。"
