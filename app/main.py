@@ -151,11 +151,14 @@ def add_record():
     tdatetime = day.strftime('%Y%m%d')
     
     news_record, news_record_tuple = ra.news_check(day)
-    # ra.save_csv(news_record, "news_record.csv")
-      
-    try:
-        result = load_data("newsrecord${}".format(tdatetime),
+    # ra.save_csv(news_record, "news_record.csv")  
+    result = load_data("newsrecord${}".format(tdatetime),
                            news_record_tuple)    
+
+    try:
+        player_list = ra.get_player_dic(day)
+        player_record, player_record_tuple = ra.get_player_record(player_list, day)
+        # ra.save_csv(player_record, "player_record.csv")
     except NameError as e:
         json_dict.update({'error':
                          {
@@ -163,15 +166,20 @@ def add_record():
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
-        return encode_json_data        
-
-    player_list = ra.get_player_dic(day)
-    player_record, player_record_tuple = ra.get_player_record(player_list, day)
-    ra.save_csv(player_record, "player_record.csv")
-
-    result = load_data("playerrecord${}".format(tdatetime),
-                       player_record_tuple)
-
+        return encode_json_data 
+    
+    try:
+        result = load_data("playerrecord${}".format(tdatetime),
+                           player_record_tuple)
+    except NameError as e:
+        json_dict.update({'error':
+                         {
+                         'text':e.args
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data 
+    
     json_dict.update({'completed':
                          {
                          'text':player_record_tuple
