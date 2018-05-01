@@ -31,7 +31,18 @@ def newsloader():
     else:
         day = datetime.date(int(day[0]), int(day[1]), int(day[2]))
     tdatetime = day.strftime('%Y-%m-%d')
-    result = SL.news_loader(query, rowcount, tdatetime)
+    try:
+        result = SL.news_loader(query, rowcount, tdatetime)
+    except NameError as e:
+        json_dict.update({'error':
+                         {
+                         'text':e.args,
+                         'date':tdatetime
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data 
+    
     if result is None:
       return 'not found : %s' % query, 400
     return result, 200
