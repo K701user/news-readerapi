@@ -214,14 +214,12 @@ class SportsLive:
         keyword = keyword.split(' ')
         output_text = ""
         json_dict = {}
-        client = bigquery.Client(credentials= credentials)
+        client = bigquery.Client(project='sports-agent-199307')
 
         if 1 <= rowcount < 5:
             rowcount_str = "row{}_text".format(str(rowcount))
         else:
             rowcount_str = "Full_text"
-
-        # day = datetime.datetime.strptime(day, '%Y-%m-%d')
 
         if debug:
             myquery = """
@@ -273,9 +271,7 @@ class SportsLive:
         keyword = keyword.split(' ')
         output_text = ""
         json_dict = {}
-        client = bigquery.Client(credentials= credentials)
-
-        day = datetime.datetime.strptime('%Y-%m-%d')
+        client = bigquery.Client(project='sports-agent-199307')
 
         if debug:
             myquery = """
