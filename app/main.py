@@ -179,6 +179,31 @@ def add_record():
                            news_record_tuple)    
 
     
+    try:
+        player_list = ra.get_player_dic(day)
+        player_record, player_record_tuple = ra.get_player_record(player_list, day)
+        # ra.save_csv(player_record, "player_record.csv")
+    except NameError as e:
+        json_dict.update({'error':
+                         {
+                         'text':e.args
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data 
+    
+    try:
+        result = load_data("playerrecord${}".format(tdatetime),
+                           player_record_tuple)
+    except NameError as e:
+        json_dict.update({'error':
+                         {
+                         'text':e.args,
+                         'list':player_record_tuple
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data 
     json_dict.update({'completed':
                          {
                          'text':player_record_tuple
@@ -197,9 +222,9 @@ def load_data(table_id, source):
     # except:
     #     raise NameError('credentials error')        
     try:
-        # bigquery_client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
+        bigquery_client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
         # bigquery_client = bigquery.Client(project='sports-agent-199307', credentials=credential)
-        bigquery_client = bigquery.Client()
+        # bigquery_client = bigquery.Client()
         dataset_ref = bigquery_client.dataset("sportsagent")
     except:
         raise NameError('client dont getting')
