@@ -224,20 +224,20 @@ class SportsLive:
         if debug:
             myquery = """
                         SELECT title,Full_text,{0} as text
-                        FROM sportsagent.newsrecord${1}
-                        WHERE title like '%{2}%'
+                        FROM sportsagent.newsrecord
+                        WHERE title like '%{2}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(rowcount_str, day, str(keyword))
         elif debug and rowcount_str == "Full_text":
             myquery = """
                         SELECT title,Full_text as text
-                        FROM sportsagent.newsrecord${0}
-                        WHERE title like '%{1}%'
+                        FROM sportsagent.newsrecord
+                        WHERE title like '%{1}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(day, str(keyword))
         else:
             myquery = """
                         SELECT {0} as text
-                        FROM sportsagent.newsrecord${1}
-                        WHERE title like '%{2}%'
+                        FROM sportsagent.newsrecord
+                        WHERE title like '%{2}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(rowcount_str, day, str(keyword))
 
         query_job = client.query(myquery)
@@ -276,14 +276,14 @@ class SportsLive:
         if debug:
             myquery = """
                         SELECT name,record as text
-                        FROM sportsagent.playerrecord${0}
-                        WHERE name like '%{1}%'
+                        FROM sportsagent.playerrecord
+                        WHERE name like '%{1}%' AND _PARTITIONTIME = TIMESTAMP('{0}')
                       """.format(day, str(keyword))
         else:
             myquery = """
                         SELECT name,record as text
-                        FROM sportsagent.playerrecord${0}
-                        WHERE name like '%{1}%'
+                        FROM sportsagent.playerrecord
+                        WHERE name like '%{1}%' AND _PARTITIONTIME = TIMESTAMP('{0}')
                       """.format(day, str(keyword))
 
         query_job = client.query(myquery)
