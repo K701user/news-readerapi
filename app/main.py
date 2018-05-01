@@ -28,8 +28,10 @@ def newsloader():
         rowcount = 2
     if day is None:
         day = datetime.date.today()
-        day = day.strftime('%Y%m%d')
-    result = SL.news_loader(query, rowcount, day)
+    else:
+        day = datetime.date(int(day[0]), int(day[1]), int(day[2]))
+    tdatetime = day.strftime('%Y%m%d')
+    result = SL.news_loader(query, rowcount, tdatetime)
     if result is None:
       return 'not found : %s' % query, 400
     return result, 200
@@ -50,8 +52,10 @@ def newsloader_debug():
         rowcount = 2
     if day is None:
         day = datetime.date.today()
-        day = day.strftime('%Y%m%d')
-    result = SL.news_loader(query, rowcount, day, debug=True)
+    else:
+        day = datetime.date(int(day[0]), int(day[1]), int(day[2]))
+    tdatetime = day.strftime('%Y%m%d')
+    result = SL.news_loader(query, rowcount, tdatetime, debug=True)
     if result is None:
       return 'not found : %s' % query, 400
     return result, 200
