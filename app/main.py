@@ -185,13 +185,14 @@ def load_data(table_id, source):
     # bigquery_client = bigquery.Client()
     # bigquery_client = bigquery.Client(project='sports-agent-199307')
     json_key = 'Sports-Agent-f6e6a0a6dbc3.json'
-    try:
-        credential = service_account.Credentials.from_authorized_user_file('Sports-Agent-f6e6a0a6dbc3.json')
-    except:
-        raise NameError('credentials error')        
+    # try:
+    #     credential = service_account.Credentials.from_authorized_user_file('Sports-Agent-f6e6a0a6dbc3.json')
+    # except:
+    #     raise NameError('credentials error')        
     try:
         # bigquery_client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
-        bigquery_client = bigquery.Client(project='sports-agent-199307', credentials=credential)
+        # bigquery_client = bigquery.Client(project='sports-agent-199307', credentials=credential)
+        bigquery_client = bigquery.Client(project='sports-agent-199307')
         dataset_ref = bigquery_client.dataset("sportsagent")
     except:
         raise NameError('client dont getting')
