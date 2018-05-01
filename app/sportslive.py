@@ -227,7 +227,7 @@ class SportsLive:
                         FROM sportsagent.newsrecord
                         WHERE title like '%{2}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(rowcount_str, day, str(keyword))
-        elif debug and rowcount_str == "Full_text":
+        elif debug or rowcount_str == "Full_text":
             myquery = """
                         SELECT title,Full_text as text
                         FROM sportsagent.newsrecord
@@ -239,10 +239,12 @@ class SportsLive:
                         FROM sportsagent.newsrecord
                         WHERE title like '%{2}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(rowcount_str, day, str(keyword))
-
-        query_job = client.query(myquery)
-        results = query_job.result()  # Waits for job to complete.
-
+        try:
+            query_job = client.query(myquery)
+            results = query_job.result()  # Waits for job to complete.
+        except:
+            raise NameError(myquery)
+            
         if 1 <= rowcount < 5:
             # random select for results
             randindex = random.randint(0, len(results))
