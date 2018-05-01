@@ -174,7 +174,8 @@ def add_record():
     except NameError as e:
         json_dict.update({'error':
                          {
-                         'text':e.args
+                         'text':e.args,
+                         'list':player_record_tuple
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
