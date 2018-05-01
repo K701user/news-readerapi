@@ -177,7 +177,32 @@ def add_record():
     # ra.save_csv(news_record, "news_record.csv")  
     result = load_data("newsrecord${}".format(tdatetime),
                        news_record_tuple)    
-
+    
+    try:
+        player_list = ra.get_player_dic(day)
+        player_record, player_record_tuple = ra.get_player_record(player_list, day)
+        # ra.save_csv(player_record, "player_record.csv")
+    except NameError as e:
+        json_dict.update({'error':
+                         {
+                         'text':e.args
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data 
+    
+    try:
+        result = load_data("playerrecord${}".format(tdatetime),
+                           player_record_tuple)
+    except NameError as e:
+        json_dict.update({'error':
+                         {
+                         'text':e.args,
+                         'list':player_record_tuple
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data 
     json_dict.update({'completed':
                          {
                          'text':player_record_tuple
@@ -191,13 +216,10 @@ def load_data(table_id, source):
     # bigquery_client = bigquery.Client()
     # bigquery_client = bigquery.Client(project='sports-agent-199307')
     json_key = 'Sports-Agent-f6e6a0a6dbc3.json'
-    # try:
-    #     credential = service_account.Credentials.from_authorized_user_file('Sports-Agent-f6e6a0a6dbc3.json')
-    # except:
-    #     raise NameError('credentials error')        
+       
     try:
-        bigquery_client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
-        # bigquery_client = bigquery.Client(project='sports-agent-199307', credentials=credential)
+        # bigquery_client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
+        bigquery_client = bigquery.Client(project='sports-agent-199307')
         # bigquery_client = bigquery.Client()
         dataset_ref = bigquery_client.dataset("sportsagent")
     except:
