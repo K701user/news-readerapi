@@ -28,9 +28,8 @@ def newsloader():
         rowcount = 2
     if day is None:
         day = datetime.date.today()
-    else:
-        day = datetime.date(int(day[0]), int(day[1]), int(day[2]))
-    tdatetime = day.strftime('%Y-%m-%d')
+        tdatetime = day.strftime('%Y-%m-%d')
+    
     try:
         result = SL.news_loader(query, rowcount, tdatetime)
     except NameError as e:
