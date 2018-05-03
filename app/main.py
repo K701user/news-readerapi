@@ -206,7 +206,7 @@ def add_record():
     except:
         json_dict.update({'error':
                          {
-                         'text':'unknown news error news record get'
+                         'text':'unknown news error news record get',
                          "set":str(len(news_record_tuple))
                          }}
                          )
