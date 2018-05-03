@@ -218,11 +218,10 @@ def add_record():
         player_list = ra.get_player_dic(day)
         player_record, player_record_tuple = ra.get_player_record(player_list, day)
         # ra.save_csv(player_record, "player_record.csv")
-    except NameError as e:
+    except:
         json_dict.update({'error':
                          {
-                         'title':'player error',
-                         'text':e.args
+                         'title':'player get error'
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
@@ -231,10 +230,10 @@ def add_record():
     try:
         result = load_data("playerrecord${}".format(tdatetime),
                            player_record_tuple)
-    except NameError as e:
+    except:
         json_dict.update({'error':
                          {
-                         'text':e.args,
+                         'text':"load error player",
                          'list':player_record_tuple
                          }}
                          )
@@ -255,8 +254,8 @@ def load_data(table_id, source):
     json_key = 'Sports-Agent-f6e6a0a6dbc3.json'
        
     try:
-        # bigquery_client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
-        bigquery_client = bigquery.Client(project='sports-agent-199307')
+        bigquery_client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
+        # bigquery_client = bigquery.Client(project='sports-agent-199307')
         # bigquery_client = bigquery.Client()
         dataset_ref = bigquery_client.dataset("sportsagent")
     except:
