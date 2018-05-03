@@ -191,27 +191,29 @@ def add_record():
                          )
         encode_json_data = json.dumps(json_dict)
         return encode_json_data   
-    try:
-        # ra.save_csv(news_record, "news_record.csv")  
-        result = load_data("newsrecord${}".format(tdatetime),
-                           news_record_tuple)    
-    except NameError as e:
-        json_dict.update({'error':
-                         {
-                         'text':'news error loading',
-                         'description':e.args
-                         }}
-                         )
-        encode_json_data = json.dumps(json_dict)
-        return encode_json_data 
-    except:
-        json_dict.update({'error':
-                         {
-                         'text':'unknown news error news record loading'
-                         }}
-                         )
-        encode_json_data = json.dumps(json_dict)
-        return encode_json_data         
+    if len(news_record_tuple) != 0:
+        try:
+            # ra.save_csv(news_record, "news_record.csv")  
+            result = load_data("newsrecord${}".format(tdatetime),
+                               news_record_tuple)    
+        except NameError as e:
+            json_dict.update({'error':
+                             {
+                             'text':'news error loading',
+                             'description':e.args
+                             }}
+                             )
+            encode_json_data = json.dumps(json_dict)
+            return encode_json_data 
+        except:
+            json_dict.update({'error':
+                             {
+                              'text':'unknown news error news record loading'
+                             }}
+                             )
+            encode_json_data = json.dumps(json_dict)
+            return encode_json_data         
+        
     try:
         player_list = ra.get_player_dic(day)
         player_record, player_record_tuple = ra.get_player_record(player_list, day)
