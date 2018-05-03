@@ -169,15 +169,24 @@ def add_record():
     day = request.args.get('query').split('-')
     if day is None:
         return 'No provided.', 400
+    try:
+        day = datetime.date(int(day[0]), int(day[1]), int(day[2]))
+        tdatetime = day.strftime('%Y%m%d')
     
-    day = datetime.date(int(day[0]), int(day[1]), int(day[2]))
-    tdatetime = day.strftime('%Y%m%d')
-    
-    news_record, news_record_tuple = ra.news_check(day)
-    # ra.save_csv(news_record, "news_record.csv")  
-    result = load_data("newsrecord${}".format(tdatetime),
-                       news_record_tuple)    
-    
+        news_record, news_record_tuple = ra.news_check(day)
+        # ra.save_csv(news_record, "news_record.csv")  
+        result = load_data("newsrecord${}".format(tdatetime),
+                           news_record_tuple)    
+    except:
+        json_dict.update({'error':
+                         {
+                         'title':'playe error'
+                         'text':'news error'
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data 
+        
     try:
         player_list = ra.get_player_dic(day)
         player_record, player_record_tuple = ra.get_player_record(player_list, day)
