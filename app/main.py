@@ -174,13 +174,10 @@ def add_record():
         tdatetime = day.strftime('%Y%m%d')
     
         news_record, news_record_tuple = ra.news_check(day)
-        # ra.save_csv(news_record, "news_record.csv")  
-        result = load_data("newsrecord${}".format(tdatetime),
-                           news_record_tuple)    
     except NameError as e:
         json_dict.update({'error':
                          {
-                         'text':'news error',
+                         'text':'news error get',
                          'description':e.args
                          }}
                          )
@@ -189,7 +186,28 @@ def add_record():
     except:
         json_dict.update({'error':
                          {
-                         'text':'unknown news error'
+                         'text':'unknown news error news record get'
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data   
+    try:
+        # ra.save_csv(news_record, "news_record.csv")  
+        result = load_data("newsrecord${}".format(tdatetime),
+                           news_record_tuple)    
+    except NameError as e:
+        json_dict.update({'error':
+                         {
+                         'text':'news error loading',
+                         'description':e.args
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data 
+    except:
+        json_dict.update({'error':
+                         {
+                         'text':'unknown news error news record loading'
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
