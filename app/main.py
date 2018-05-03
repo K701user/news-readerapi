@@ -180,7 +180,7 @@ def add_record():
     except:
         json_dict.update({'error':
                          {
-                         'title':'playe error'
+                         'title':'playe error',
                          'text':'news error'
                          }}
                          )
