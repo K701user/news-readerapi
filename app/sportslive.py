@@ -37,7 +37,7 @@ rss_news = [r"https://headlines.yahoo.co.jp/rss/jsportsv-c_spo.xml",
             r"https://headlines.yahoo.co.jp/rss/nksports-c_spo.xml",
             r"https://headlines.yahoo.co.jp/rss/gekisaka-c_spo.xml",
             r"https://headlines.yahoo.co.jp/rss/fullcount-c_spo.xml"]
-
+json_key = 'Sports-Agent-f6e6a0a6dbc3.json'
 base_url = [r"http://www.baseball-lab.jp"]
 player_url = [r"/player/batter/",
               r"/player/pitcher/"]
@@ -223,23 +223,23 @@ class SportsLive:
         if debug:
             myquery = """
                         SELECT title,Full_text,{0} as text
-                        FROM sportsagent.newsrecord
+                        FROM [sportsagent.newsrecord]
                         WHERE title like '%{2}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(rowcount_str, day, str(keyword))
         elif debug or rowcount_str == "Full_text":
             myquery = """
                         SELECT title,Full_text as text
-                        FROM sportsagent.newsrecord
+                        FROM [sportsagent.newsrecord]
                         WHERE title like '%{1}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(day, str(keyword))
         else:
             myquery = """
                         SELECT {0} as text
-                        FROM sportsagent.newsrecord
+                        FROM [sportsagent.newsrecord]
                         WHERE title like '%{2}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(rowcount_str, day, str(keyword))
         try:
-            client = bigquery.Client(project='sports-agent-199307')
+            client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
             query_job = client.query(myquery)
             results = query_job.result()  # Waits for job to complete.
         except:
@@ -273,7 +273,7 @@ class SportsLive:
         keyword = keyword.split(' ')
         output_text = ""
         json_dict = {}
-        client = bigquery.Client(project='sports-agent-199307')
+        client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
 
         if debug:
             myquery = """
