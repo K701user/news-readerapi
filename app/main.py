@@ -234,6 +234,14 @@ def add_record():
                              )
             encode_json_data = json.dumps(json_dict)
             return encode_json_data         
+    else:
+        json_dict.update({'error':
+                         {
+                          'text':'no one news getting'
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data         
         
     try:
         player_list = ra.get_player_dic(day)
