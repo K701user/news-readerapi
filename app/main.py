@@ -172,7 +172,27 @@ def add_record():
     try:
         day = datetime.date(int(day[0]), int(day[1]), int(day[2]))
         tdatetime = day.strftime('%Y%m%d')
+    except NameError as e:
+        json_dict.update({'error':
+                         {
+                         'text':'news error get',
+                         'description':e.args
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data 
+    except:
+        json_dict.update({'error':
+                         {
+                         'text':'unknown news error news record get',
+                         'style':tdatetime
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data   
     
+    
+    try:
         news_record, news_record_tuple = ra.news_check(day)
     except NameError as e:
         json_dict.update({'error':
