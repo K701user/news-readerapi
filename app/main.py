@@ -177,7 +177,7 @@ def add_record():
         # ra.save_csv(news_record, "news_record.csv")  
         result = load_data("newsrecord${}".format(tdatetime),
                            news_record_tuple)    
-    except Exception as e:
+    except NameError as e:
         json_dict.update({'error':
                          {
                          'text':'news error',
@@ -186,7 +186,14 @@ def add_record():
                          )
         encode_json_data = json.dumps(json_dict)
         return encode_json_data 
-        
+    except:
+        json_dict.update({'error':
+                         {
+                         'text':'unknown news error'
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data         
     try:
         player_list = ra.get_player_dic(day)
         player_record, player_record_tuple = ra.get_player_record(player_list, day)
