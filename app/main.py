@@ -30,14 +30,23 @@ def newsloader():
                          )
         encode_json_data = json.dumps(json_dict)
         return encode_json_data 
-        
-    if query is None:
-      return 'No provided.', 400
-    if rowcount is None:
-        rowcount = 2
-    if day is None:
-        day = datetime.date.today()
-        tdatetime = day.strftime('%Y-%m-%d')
+    try:    
+        if query is None:
+            return 'No provided.', 400
+        if rowcount is None:
+            rowcount = 2
+        if day is None:
+            day = datetime.date.today()
+            tdatetime = day.strftime('%Y-%m-%d')
+    except:
+        json_dict.update({'error':
+                         {
+                         'text':"format miss",
+                         'date':tdatetime
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data 
     
     try:
         result = SL.news_loader(query, rowcount, tdatetime)
