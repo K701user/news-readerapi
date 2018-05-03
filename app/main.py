@@ -283,8 +283,8 @@ def load_data(table_id, source):
     json_key = 'Sports-Agent-f6e6a0a6dbc3.json'
        
     try:
-        # bigquery_client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
-        bigquery_client = bigquery.Client(project='sports-agent-199307')
+        bigquery_client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
+        # bigquery_client = bigquery.Client(project='sports-agent-199307')
         # bigquery_client = bigquery.Client()
         dataset_ref = bigquery_client.dataset("sportsagent")
     except:
