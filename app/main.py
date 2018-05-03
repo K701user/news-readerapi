@@ -184,8 +184,8 @@ def add_record():
     except:
         json_dict.update({'error':
                          {
-                         'text':'unknown news error news record get',
-                         'style':tdatetime
+                         'text':'unknown news error news tdate get',
+                         'style':str(tdatetime)
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
@@ -207,6 +207,7 @@ def add_record():
         json_dict.update({'error':
                          {
                          'text':'unknown news error news record get'
+                         "set":str(len(news_record_tuple))
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
