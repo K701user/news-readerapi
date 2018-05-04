@@ -15,9 +15,8 @@ SL = sportslive.SportsLive()
 
 @app.route('/news-loader', methods=['GET'])
 def newsloader():
-    """Given an query, return that news."""
+    query = request.args.get('query')
     try:
-        query = request.args.get('query')
         querylist = query.split('_')
         query = querylist[0]
         rowcount = int(querylist[1])
@@ -25,7 +24,7 @@ def newsloader():
     except:
         json_dict.update({'error':
                          {
-                         'date':''.join(querylist)
+                         'string':"query get error"
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
@@ -38,6 +37,8 @@ def newsloader():
         if day is None:
             day = datetime.date.today()
             tdatetime = day.strftime('%Y-%m-%d')
+        else:
+            tdatetime = day
     except:
         json_dict.update({'error':
                          {
