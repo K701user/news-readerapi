@@ -226,7 +226,7 @@ class SportsLive:
         except:
             NameError("test error")
 
-        if debug AND rowcount_str == "Full_text":
+        if debug and rowcount_str == "Full_text":
             myquery = """
                         SELECT title,Full_text as text
                         FROM sportsagent.newsrecord
