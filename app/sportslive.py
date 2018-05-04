@@ -251,6 +251,9 @@ class SportsLive:
                       """.format(rowcount_str, day, str(keyword))
         try:
             client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
+            dataset_ref = client.dataset("sportsagent")
+            table_ref = dataset_ref.table("newsrecord")
+            config.destination = table_ref
             query_job = client.query(myquery, job_config=config)
             results = query_job.result()  # Waits for job to complete.
         except:
