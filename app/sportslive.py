@@ -211,11 +211,13 @@ class SportsLive:
 
     @staticmethod
     def news_loader(keyword, rowcount, day, debug=False):
+        myquery = ""
+        news_dict = {}
+        # keyword = keyword.split(' ')
+        output_text = ""
+        json_dict = {}
+        config = None
         try:
-            news_dict = {}
-            # keyword = keyword.split(' ')
-            output_text = ""
-            json_dict = {}
             config = bigquery.QueryJobConfig()
             config.use_legacy_sql = True
         except:
