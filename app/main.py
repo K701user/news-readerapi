@@ -25,7 +25,7 @@ def newsloader():
     except:
         json_dict.update({'error':
                          {
-                         'date':querylist
+                         'date':''.join(querylist)
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
@@ -41,8 +41,7 @@ def newsloader():
     except:
         json_dict.update({'error':
                          {
-                         'text':"format miss",
-                         'date':tdatetime
+                         'text':"format miss"
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
@@ -61,7 +60,7 @@ def newsloader():
         return encode_json_data 
     
     if result is None:
-      return 'not found : %s' % query, 400
+        return 'not found : %s' % query, 400
     return result, 200
 
 
@@ -75,7 +74,7 @@ def newsloader_debug():
     day = querylist[2]
 
     if query is None:
-      return 'No provided.', 400
+        return 'No provided.', 400
     if rowcount is None:
         rowcount = 2
     if day is None:
@@ -85,7 +84,7 @@ def newsloader_debug():
     tdatetime = day.strftime('%Y-%m-%d')
     result = SL.news_loader(query, rowcount, tdatetime, debug=True)
     if result is None:
-      return 'not found : %s' % query, 400
+        return 'not found : %s' % query, 400
     return result, 200
 
 
@@ -118,14 +117,14 @@ def playerloader_debug():
     day = querylist[1]
 
     if query is None:
-      return 'No provided.', 400
+        return 'No provided.', 400
     if day is None:
         day = datetime.date.today()
         day = day.strftime('%Y%m%d')
         
     result = SL.player_loader(query, day, debug=True)
     if result is None:
-      return 'not found : %s' % query, 400
+        return 'not found : %s' % query, 400
     return result, 200
 
 
@@ -134,10 +133,10 @@ def newsreader():
     """Given an query, return that news."""
     query = request.args.get('query')
     if query is None:
-      return 'No provided.', 400
+        return 'No provided.', 400
     result = SL.news_check(query)
     if result is None:
-      return 'not found : %s' % query, 400
+        return 'not found : %s' % query, 400
     return result, 200
 
 
@@ -146,10 +145,10 @@ def newsreader_debug():
     """Given an query, return that news debug mode."""
     query = request.args.get('query')
     if query is None:
-      return 'No provided.', 400
+        return 'No provided.', 400
     result = SL.news_check(query, debug=True)
     if result is None:
-      return 'not found : %s' % query, 400
+        return 'not found : %s' % query, 400
     return result, 200
 
 
@@ -162,10 +161,10 @@ def summarize():
     rowcount = int(querylist[1])
     
     if query is None:
-      return 'No provided.', 400
+        return 'No provided.', 400
     result = SL.sammarize(query, rowcount)
     if result is None:
-      return 'not found : %s' % query, 400
+        return 'not found : %s' % query, 400
     return result, 200
 
 
