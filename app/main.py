@@ -42,7 +42,7 @@ def newsloader():
     except:
         json_dict.update({'error':
                          {
-                         'text':"format miss {}".format(query)
+                         'text':"format miss"
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
@@ -53,7 +53,7 @@ def newsloader():
     except:
         json_dict.update({'error':
                          {
-                         'date':tdatetime
+                         'date':"aaaaa"
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
