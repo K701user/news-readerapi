@@ -214,6 +214,8 @@ class SportsLive:
         # keyword = keyword.split(' ')
         output_text = ""
         json_dict = {}
+        config = bigquery.QueryJobConfig()
+        config.use_legacy_sql = True
 
         if 1 <= rowcount < 5:
             rowcount_str = "row{}_text".format(str(rowcount))
@@ -240,7 +242,7 @@ class SportsLive:
                       """.format(rowcount_str, day, str(keyword))
         try:
             client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
-            query_job = client.query(myquery)
+            query_job = client.query(myquery, job_config=config)
             results = query_job.result()  # Waits for job to complete.
         except:
             raise NameError(myquery)
@@ -274,6 +276,8 @@ class SportsLive:
         output_text = ""
         json_dict = {}
         client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
+        config = bigquery.QueryJobConfig()
+        config.use_legacy_sql = True
 
         if debug:
             myquery = """
@@ -288,7 +292,7 @@ class SportsLive:
                         WHERE name like '%{1}%' AND _PARTITIONTIME = TIMESTAMP('{0}')
                       """.format(day, str(keyword))
 
-        query_job = client.query(myquery)
+        query_job = client.query(myquery, job_config=config)
         results = query_job.result()  # Waits for job to complete.
 
         output_text = "".join([re.text for re in results])
