@@ -41,7 +41,7 @@ def newsloader():
     except:
         json_dict.update({'error':
                          {
-                         'text':"format miss"
+                         'text':"format miss {}".format(query)
                          }}
                          )
         encode_json_data = json.dumps(json_dict)
@@ -49,10 +49,9 @@ def newsloader():
     
     try:
         result = SL.news_loader(query, rowcount, tdatetime)
-    except NameError as e:
+    except:
         json_dict.update({'error':
                          {
-                         'text':e.args,
                          'date':tdatetime
                          }}
                          )
