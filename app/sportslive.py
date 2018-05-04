@@ -211,12 +211,15 @@ class SportsLive:
 
     @staticmethod
     def news_loader(keyword, rowcount, day, debug=False):
-        news_dict = {}
-        # keyword = keyword.split(' ')
-        output_text = ""
-        json_dict = {}
-        config = bigquery.QueryJobConfig()
-        config.use_legacy_sql = True
+        try:
+            news_dict = {}
+            # keyword = keyword.split(' ')
+            output_text = ""
+            json_dict = {}
+            config = bigquery.QueryJobConfig()
+            config.use_legacy_sql = True
+        except:
+            raise NameError("cerror?")            
 
         try:
             if 1 <= rowcount < 5:
