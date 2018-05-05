@@ -16,19 +16,21 @@ SL = sportslive.SportsLive()
 @app.route('/news-loader', methods=['GET'])
 def newsloader():
     query = request.args.get('query')
-    try:
-        querylist = query.split('_')
-        query = querylist[0]
-        rowcount = int(querylist[1])
-        day = querylist[2]
-    except:
-        json_dict.update({'error':
-                         {
-                         'string':"query get error"
-                         }}
-                         )
-        encode_json_data = json.dumps(json_dict)
-        return encode_json_data 
+    querylist = query.split('_')
+    query = querylist[0]
+    rowcount = int(querylist[1])
+    day = querylist[2]
+        
+    json_dict.update({'error':
+                     {
+                         'q':query,
+                         'r':str(rowcount),
+                         'd':day
+                     }}
+                     )
+    encode_json_data = json.dumps(json_dict)
+    return encode_json_data 
+    
     try:    
         if query is None:
             return 'No provided.', 400
