@@ -37,7 +37,10 @@ rss_news = [r"https://headlines.yahoo.co.jp/rss/jsportsv-c_spo.xml",
             r"https://headlines.yahoo.co.jp/rss/nksports-c_spo.xml",
             r"https://headlines.yahoo.co.jp/rss/gekisaka-c_spo.xml",
             r"https://headlines.yahoo.co.jp/rss/fullcount-c_spo.xml"]
+
 json_key = 'Sports-Agent-f6e6a0a6dbc3.json'
+client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
+
 base_url = [r"http://www.baseball-lab.jp"]
 player_url = [r"/player/batter/",
               r"/player/pitcher/"]
@@ -239,7 +242,7 @@ class SportsLive:
                         WHERE title like '%{2}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(rowcount_str, day, str(keyword))
         try:
-            client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
+            # client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
             query_job = client.query(myquery, location='asia-northeast1')
             results = query_job.result()  # Waits for job to complete.
             result_list = list(results)
@@ -294,15 +297,16 @@ class SportsLive:
 
         query_job = client.query(myquery, location='asia-northeast1')
         results = query_job.result()  # Waits for job to complete.
-
-        output_text = "".join([re.text for re in results])
+        result_list = list(result_list)
+        
+        output_text = result_list[0][0] + "は"　+ result_list[0][1] + "でした"
 
         if debug:
-            for result in results:
+            for result in result_list:
                 json_dict.update({result.title:
                 {
-                    'text':result.Full_text,
-                    'a_text':result.text
+                    'name':result[0],
+                    'record':result[1]
                 }}
                 )
 
