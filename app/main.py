@@ -20,16 +20,6 @@ def newsloader():
     query = querylist[0]
     rowcount = int(querylist[1])
     day = querylist[2]
-        
-    json_dict.update({'error':
-                     {
-                         'q':query,
-                         'r':str(rowcount),
-                         'd':day
-                     }}
-                     )
-    encode_json_data = json.dumps(json_dict)
-    return encode_json_data 
     
     try:    
         if query is None:
