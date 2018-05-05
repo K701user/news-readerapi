@@ -225,43 +225,44 @@ class SportsLive:
 
         if debug and rowcount_str == "Full_text":
             myquery = """
-                        SELECT title,Full_text as text FROM sportsagent.newsrecord
+                        SELECT Full_text as text,title,Full_text FROM sportsagent.newsrecord
                         WHERE title like '%{1}%' AND _PARTITIONTIME = TIMESTAMP('{0}')
                       """.format(day, str(keyword))
         if debug:
             myquery = """
-                        SELECT title,Full_text,{0} as text FROM sportsagent.newsrecord
+                        SELECT {0} as text,title,Full_text FROM sportsagent.newsrecord
                         WHERE title like '%{2}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(rowcount_str, day, str(keyword))
         else:
             myquery = """
-                        SELECT title,{0} as text　FROM sportsagent.newsrecord
+                        SELECT {0} as text,title　FROM sportsagent.newsrecord
                         WHERE title like '%{2}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(rowcount_str, day, str(keyword))
         try:
             client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
             query_job = client.query(myquery, location='asia-northeast1')
             results = query_job.result()  # Waits for job to complete.
+            result_list = list(results)
         except:
             raise NameError(myquery)
         
         try:
             if 1 <= rowcount < 5:
                 # random select for results
-                randindex = random.randint(0, len(results) - 1)
-                output_text = results[randindex].text
+                randindex = random.randint(0, len(result_list) - 1)
+                output_text = result_list[randindex][0]
             else:
-                text = "".join([re.text for re in results])
+                text = "".join([re.text for re in result_list])
                 output_text = self.analsys_text(text, rowcount)
         except:
             raise NameError("get errors?")
             
         if debug:
-            for result in results:
+            for result in result_list:
                 json_dict.update({result.title:
                 {
-                    'text':result.Full_text,
-                    'a_text':result.text
+                    'title':result[1],
+                    'a_text':result[2]
                 }}
                 )
 
