@@ -82,9 +82,9 @@ def newsloader_debug():
         rowcount = 2
     if day is None:
         day = datetime.date.today()
+        tdatetime = day.strftime('%Y-%m-%d')
     else:
-        day = datetime.date(int(day[0]), int(day[1]), int(day[2]))
-    tdatetime = day.strftime('%Y-%m-%d')
+        tdatetime = day
     result = SL.news_loader(query, rowcount, tdatetime, debug=True)
     if result is None:
         return 'not found : %s' % query, 400
@@ -104,9 +104,11 @@ def playerloader():
         return 'No provided.', 400
     if day is None:
         day = datetime.date.today()
-        day = day.strftime('%Y%m%d')
+        tdatetime = day.strftime('%Y-%m-%d')
+    else:
+        tdatetime = day
         
-    result = SL.player_loader(query, day)
+    result = SL.player_loader(query, tdatetime)
     if result is None:
         return 'not found : %s' % query, 400
     return result, 200
@@ -126,8 +128,10 @@ def playerloader_debug():
     if day is None:
         day = datetime.date.today()
         day = day.strftime('%Y%m%d')
-        
-    result = SL.player_loader(query, day, debug=True)
+        tdatetime = day.strftime('%Y-%m-%d')
+    else:
+        tdatetime = day        
+    result = SL.player_loader(query, tdatetime, debug=True)
     if result is None:
         return 'not found : %s' % query, 400
     return result, 200
