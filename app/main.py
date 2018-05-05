@@ -10,11 +10,11 @@ from google.cloud import storage
 from google.oauth2 import service_account
 
 app = Flask(__name__)
-
 SL = sportslive.SportsLive()
 
 @app.route('/news-loader', methods=['GET'])
 def newsloader():
+    json_dict = {}
     query = request.args.get('query')
     querylist = query.split('_')
     query = querylist[0]
@@ -74,6 +74,7 @@ def newsloader_debug():
     query = querylist[0]
     rowcount = int(querylist[1])
     day = querylist[2]
+    json_dict = {}
 
     if query is None:
         return 'No provided.', 400
@@ -97,6 +98,7 @@ def playerloader():
     querylist = query.split('_')
     query = querylist[0]
     day = querylist[1]
+    json_dict = {}
     
     if query is None:
         return 'No provided.', 400
@@ -117,6 +119,7 @@ def playerloader_debug():
     querylist = query.split('_')
     query = querylist[0]
     day = querylist[1]
+    json_dict = {}
 
     if query is None:
         return 'No provided.', 400
