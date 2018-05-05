@@ -215,32 +215,27 @@ class SportsLive:
         news_dict = {}
         # keyword = keyword.split(' ')
         output_text = ""
+        rowcount_str = ""
         json_dict = {}         
 
-        try:
-            if 1 <= rowcount < 5:
-                rowcount_str = "row{}_text".format(str(rowcount))
-            else:
-                rowcount_str = "Full_text"
-        except:
-            NameError("test error")
+        if 1 <= rowcount < 5:
+            rowcount_str = "row{}_text".format(str(rowcount))
+        else:
+            rowcount_str = "Full_text"
 
         if debug and rowcount_str == "Full_text":
             myquery = """
-                        SELECT title,Full_text as text
-                        FROM 'sportsagent.newsrecord'
-                        WHERE title like '%{1}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
+                        SELECT title,Full_text as text FROM sportsagent.newsrecord
+                        WHERE title like '%{1}%' AND _PARTITIONTIME = TIMESTAMP('{0}')
                       """.format(day, str(keyword))
         if debug:
             myquery = """
-                        SELECT title,Full_text,{0} as text
-                        FROM 'sportsagent.newsrecord'
+                        SELECT title,Full_text,{0} as text FROM sportsagent.newsrecord
                         WHERE title like '%{2}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(rowcount_str, day, str(keyword))
         else:
             myquery = """
-                        SELECT {0} as text
-                        FROM 'sportsagent.newsrecord'
+                        SELECT title,{0} as text　FROM sportsagent.newsrecord
                         WHERE title like '%{2}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(rowcount_str, day, str(keyword))
         try:
@@ -286,13 +281,13 @@ class SportsLive:
         if debug:
             myquery = """
                         SELECT name,record as text
-                        FROM 'sportsagent.playerrecord'
+                        FROM sportsagent.playerrecord
                         WHERE name like '%{1}%' AND _PARTITIONTIME = TIMESTAMP('{0}')
                       """.format(day, str(keyword))
         else:
             myquery = """
                         SELECT name,record as text
-                        FROM 'sportsagent.playerrecord'
+                        FROM sportsagent.playerrecord
                         WHERE name like '%{1}%' AND _PARTITIONTIME = TIMESTAMP('{0}')
                       """.format(day, str(keyword))
 
