@@ -280,7 +280,7 @@ class SportsLive:
         keyword = keyword.split(' ')
         output_text = ""
         json_dict = {}
-        client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
+        # client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
 
         if debug:
             myquery = """
