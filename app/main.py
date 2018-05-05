@@ -42,6 +42,16 @@ def newsloader():
     
     try:
         result = SL.news_loader(query, rowcount, tdatetime)
+    except NameError as e:
+        json_dict.update({'error':
+                         {
+                         'args':e.args,
+                         'date':tdatetime    
+                         }}
+                         )
+        encode_json_data = json.dumps(json_dict)
+        return encode_json_data 
+        
     except:
         json_dict.update({'error':
                          {
