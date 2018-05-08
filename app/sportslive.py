@@ -277,7 +277,7 @@ class SportsLive:
 
     def player_loader(self, keyword, day, debug=False):
         news_dict = {}
-        keyword = keyword.split(' ')
+        # keyword = keyword.split(' ')
         output_text = ""
         json_dict = {}
         # client = bigquery.Client.from_service_account_json(json_key, project='sports-agent-199307')
@@ -504,7 +504,7 @@ class RecordAccumulation:
                              + td[7].text + td[7].nextSibling
                     if "●" in td[2].text:
                         record += "で、負けました。"
-                    else:
+                    elif "○" in td[2].text:
                         record += "で、勝ちました。"
                 break
             else:
