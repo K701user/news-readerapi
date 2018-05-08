@@ -299,7 +299,7 @@ class SportsLive:
         results = query_job.result()  # Waits for job to complete.
         result_list = list(result_list)
         
-        output_text = result_list[0][0] + "は"　+ result_list[0][1] + "でした"
+        output_text = str(result_list[0][0]) + "は" + str(result_list[0][1]) + "でした"
 
         if debug:
             for result in result_list:
