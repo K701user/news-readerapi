@@ -297,7 +297,7 @@ class SportsLive:
 
         query_job = client.query(myquery, location='asia-northeast1')
         results = query_job.result()  # Waits for job to complete.
-        result_list = list(result_list)
+        result_list = list(results)
         
         output_text = str(result_list[0][0]) + "は" + str(result_list[0][1]) + "でした"
 
