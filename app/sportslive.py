@@ -231,14 +231,14 @@ class SportsLive:
                         SELECT Full_text as text,title,Full_text FROM sportsagent.newsrecord
                         WHERE title like '%{1}%' AND _PARTITIONTIME = TIMESTAMP('{0}')
                       """.format(day, str(keyword))
-        if debug:
+        elif debug:
             myquery = """
                         SELECT {0} as text,title,Full_text FROM sportsagent.newsrecord
                         WHERE title like '%{2}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(rowcount_str, day, str(keyword))
         else:
             myquery = """
-                        SELECT {0} as text,title　FROM sportsagent.newsrecord
+                        SELECT title as text, {0} 　FROM sportsagent.newsrecord
                         WHERE title like '%{2}%' AND _PARTITIONTIME = TIMESTAMP('{1}')
                       """.format(rowcount_str, day, str(keyword))
         try:
