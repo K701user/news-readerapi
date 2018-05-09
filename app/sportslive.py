@@ -7,6 +7,7 @@ import random
 
 import itertools
 import requests
+import Mecab
 
 from bs4 import BeautifulSoup
 from janome.tokenizer import Tokenizer
@@ -446,7 +447,7 @@ class RecordAccumulation:
         return dic
 
     def get_player_record(self, player_dic, date):
-        rec_list = [["name", "player_type", "record"]]
+        rec_list = [["name", "player_type", "record", "name_kana"]]
         rec_tuple = []
 
         for key in player_dic.keys():
@@ -459,19 +460,20 @@ class RecordAccumulation:
 
             try:
                 div = soup.findAll("div", class_="box", id="player-game-logs")[0]
+                kana = soup.findAll("sup")[0]
 
                 if "batter" in player_dic[key][1]:
                     table = div.findAll("table", class_="tbl-stats tbl-stats-batting")[0]
-                    rec = [str(key)] + self.get_record(table, "b", date)
+                    rec = [str(key)] + self.get_record(table, "b", date) + [str(kana[0].next)]
                     rec_list.append(rec)
                     rec_tuple.append(tuple(rec))
                 else:
                     table = div.findAll("table", class_="tbl-stats tbl-stats-pitching")[0]
-                    rec = [str(key)] + self.get_record(table, "p", date)
+                    rec = [str(key)] + self.get_record(table, "p", date)+ [str(kana[0].next)]
                     rec_list.append(rec)
                     rec_tuple.append(tuple(rec))
                     table_bat = div.findAll("table", class_="tbl-stats tbl-stats-batting")[0]
-                    rec = [str(key)] + self.get_record(table_bat, "b", date)
+                    rec = [str(key)] + self.get_record(table_bat, "b", date)+ [str(kana[0].next)]
                     rec_list.append(rec)
                     rec_tuple.append(tuple(rec))
             except:
@@ -526,7 +528,7 @@ class RecordAccumulation:
     def news_check(self, date):
         news_dict = {}
         output_text = ""
-        news_list = [["title", "url", "Full_text", "row1_text", "row2_text", "row3_text", "row4_text"]]
+        news_list = [["title", "url", "Full_text", "row1_text", "row2_text", "row3_text", "row4_text", "title_kana"]]
         news_tuple = []
 
         for rss in rss_news:
@@ -551,6 +553,9 @@ class RecordAccumulation:
 
         for list_key in news_key_list:
             news = [str(list_key), str(news_dict[list_key])]
+            if "(" in list_key:
+                n_title = list_key[0:list_key.index("(")]
+                news[0] = n_title
             text = ""
             resp = requests.get(news_dict[list_key])
             soup = BeautifulSoup(resp.text, "html.parser")
@@ -563,7 +568,16 @@ class RecordAccumulation:
                 analysis_text = self.sammarize(text, r_count)
                 output_text = ''.join(analysis_text)
                 news.append(str(output_text))
-
+            
+            mecab = MeCab.Tagger("-Ochasen")#mecabを呼び出し
+            node = mecab.parseToNode(title)#ふりがなを取得
+            title_kana = ""
+            while node :
+                kana=node.feature.split(",")[7]
+                title_kana += kana
+                node=node.next
+            news.append(title_kana)
+            
             news_list.append(news)
             tnews = tuple(news)
             news_tuple.append(tnews)
@@ -583,16 +597,9 @@ class RecordAccumulation:
 
 
 def main():
-    # SL = SportsLive()
-
-    # print(SL.news_check(SL.morphological_analysis('羽生のオリンピック')))
-    # print(SL.news_check(SL.morphological_analysis('宇野昌磨の記録'), debug=True))
-
     RA = RecordAccumulation()
     today = datetime.date(2018, 4, 18)
     test = RA.news_check(today)
-    # test = RA.get_player_dic(today)
-    # table = RA.get_player_record(test, today)
     RA.save_csv(test, "record.csv")
 
 
