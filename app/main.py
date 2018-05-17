@@ -4,6 +4,7 @@ import datetime
 import json
 from flask import Flask
 from flask import request
+from flask import make_response
 import sportslive
 from google.cloud import bigquery
 from google.cloud import storage
@@ -11,6 +12,16 @@ from google.oauth2 import service_account
 
 app = Flask(__name__)
 SL = sportslive.SportsLive()
+
+
+@app.route('/webhook', methods=['POST'])
+    req = request.get_json(silent=True, force=True)
+    res = processRequest(req)
+    res = json.dumps(res, indent=4)
+    r = make_response(res)
+    r.headers['Content-Type'] = 'application/json'
+    return r
+
 
 @app.route('/news-loader', methods=['GET'])
 def newsloader():
@@ -317,6 +328,22 @@ def load_data(table_id, source):
     return errors
 
 
+def processRequest(req):
+    actiontype = req.get("result").get("action")
+    if actiontype == "reply_to_player_record":
+        pass
+    elif actiontype == "reply_to_news":
+        pass
+    elif actiontype == "reply_to_soccer_score":
+        pass
+    elif actiontype == "reply_to_baseball_score":
+        pass
+    else
+        return {}
+
+    return res
+
+    
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)
 
